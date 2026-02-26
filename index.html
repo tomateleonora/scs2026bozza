@@ -220,272 +220,231 @@ tw-story, tw-passage { max-width: 100%; }
 (link: &quot;Creativa: eventi e comunicazione&quot;)[(set: $a5 to &quot;creativa&quot;)(set: $CUL to $CUL + 2)(set: $CYB to $CYB + 2)(set: $PRO to $PRO + 2)(set: $AMP to $AMP + 1)(set: $PUP to $PUP + 1)(set: $ALI to $ALI + 2)(goto: &quot;Risultato&quot;)]
 (link: &quot;Impatto: cittadinanza e sociale&quot;)[(set: $a5 to &quot;impatto&quot;)(set: $EIC to $EIC + 2)(set: $GSR to $GSR + 2)(set: $TMP to $TMP + 2)(set: $CSG to $CSG + 2)(set: $ALI to $ALI + 2)(goto: &quot;Risultato&quot;)]</tw-passagedata><tw-passagedata pid="7" name="Risultato" tags="" position="1225,425" size="100,100">(set: $best to &quot;&quot;)(set: $why to &quot;&quot;)(set: _titolo to &quot;&quot;) (if: $provincia is &quot;TS&quot;)[(set: _m to (max: $SRI, $MSM, $TMP, $CUL, $CYB, $PUP, $PRO, $GSR, $EIC, $ALI))(set: $best to (cond: _m is $SRI, &quot;SRI&quot;, _m is $MSM, &quot;MSM&quot;, _m is $TMP, &quot;TMP&quot;, _m is $CUL, &quot;CUL&quot;, _m is $CYB, &quot;CYB&quot;, _m is $PUP, &quot;PUP&quot;, _m is $PRO, &quot;PRO&quot;, _m is $GSR, &quot;GSR&quot;, true, &quot;EIC&quot;))] (if: $provincia is &quot;UD&quot;)[(set: _m to (max: $AIN, $MAT, $AMP, $CSG))(set: $best to (cond: _m is $AIN, &quot;AIN&quot;, _m is $MAT, &quot;MAT&quot;, _m is $AMP, &quot;AMP&quot;, true, &quot;CSG&quot;))] (if: $provincia is &quot;PN&quot;)[(set: $best to &quot;SPV&quot;)] (if: $provincia is &quot;GO&quot;)[(set: $best to &quot;RIN&quot;)] (set: _titolo to (cond: $best is &quot;SRI&quot;, &quot;Scacco, Rimbalzo e Inclusione (Trieste)&quot;, $best is &quot;MSM&quot;, &quot;Melara si Muove (Trieste)&quot;, $best is &quot;TMP&quot;, &quot;The Melting Pot (Trieste)&quot;, $best is &quot;CUL&quot;, &quot;Culturando! (Trieste)&quot;, $best is &quot;CYB&quot;, &quot;Cyber Community (Trieste)&quot;, $best is &quot;PUP&quot;, &quot;Power Up (Trieste)&quot;, $best is &quot;PRO&quot;, &quot;Protagonisti Noi 2.0 (Trieste)&quot;, $best is &quot;GSR&quot;, &quot;Giovani Sinergie Rinnovabili (Trieste)&quot;, $best is &quot;EIC&quot;, &quot;Energie in Circolo (Trieste)&quot;, $best is &quot;AIN&quot;, &quot;Animare all’incontro (Udine—Codroipo)&quot;, $best is &quot;MAT&quot;, &quot;Maria al Tempio (Udine)&quot;, $best is &quot;AMP&quot;, &quot;Amplifica (Udine)&quot;, $best is &quot;CSG&quot;, &quot;Consumi o scegli? (Udine)&quot;, $best is &quot;SPV&quot;, &quot;Sport… Palestra di Vita (Pordenone)&quot;, true, &quot;RinnovaMenti (Gorizia—Staranzano)&quot;)) (set: $why to (cond: $best is &quot;SRI&quot;, &quot;Ti piacciono attività dinamiche o di gruppo.&quot;, $best is &quot;MSM&quot;, &quot;Ti piace il movimento e stare nel vivo.&quot;, $best is &quot;TMP&quot;, &quot;Ti piace supportare e far stare bene le persone.&quot;, $best is &quot;CUL&quot;, &quot;Ti piace organizzare, creare e fare cultura.&quot;, $best is &quot;CYB&quot;, &quot;Ti attirano digitale, cittadinanza e social.&quot;, $best is &quot;PUP&quot;, &quot;Ti piace sport + comunicazione.&quot;, $best is &quot;PRO&quot;, &quot;Ti piace raccontare storie e dare voce agli altri.&quot;, $best is &quot;GSR&quot;, &quot;Ti piace lavorare con minori e attività educative.&quot;, $best is &quot;EIC&quot;, &quot;Ti interessa inclusione e comunità.&quot;, $best is &quot;AIN&quot;, &quot;Ti piace l’educazione e stare con bambini/ragazzi.&quot;, $best is &quot;MAT&quot;, &quot;Ti piace doposcuola e centro estivo, lato educativo.&quot;, $best is &quot;AMP&quot;, &quot;Ti piace fare laboratori e attività territoriali.&quot;, $best is &quot;CSG&quot;, &quot;Ti interessa equo-solidale e attività di bottega.&quot;, $best is &quot;SPV&quot;, &quot;Ti piace usare lo sport per creare gruppo e comunità.&quot;, true, &quot;Ti piace lavorare con bambini/ragazzi tra compiti e centro estivo.&quot;))
 (set: _scheda to (str:&quot;proj_&quot;, $best))
-&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
-  &lt;div class=&quot;unlockTitle&quot;&gt;_titolo&lt;/div&gt;
-  &lt;div class=&quot;unlockInfo&quot;&gt;&lt;b&gt;Perché:&lt;/b&gt; $why&lt;/div&gt;
-  &lt;div class=&quot;unlockDivider&quot;&gt;&lt;/div&gt;
+
   (display: _scheda)
-  &lt;div class=&quot;unlockActions&quot;&gt;
-    (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="8" name="proj_SRI" tags="" position="500,550" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;TRIESTE - LARGO NICCOLINI 3/A (CIRCOLO U.S. ACLI APS)&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Chesspong e Pickleball come strumenti di inclusione e socializzazione.&lt;/li&gt;
-      &lt;li&gt;Supporto nell’animazione e nella conduzione di attività ludico-motorie.&lt;/li&gt;
-      &lt;li&gt;Formazione su sicurezza, primo soccorso e uso del defibrillatore.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;BERNES RAOUL — friuliveneziagiulia.usacli@acli.it — 371 3389484&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="9" name="proj_MSM" tags="" position="625,550" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;TRIESTE - VIA PASTEUR, 41 (SALA MULTIUSO DI MELARA)&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Attività motorie inclusive (trampolino, parkour, ginnastica dolce, camminata sportiva).&lt;/li&gt;
-      &lt;li&gt;Supporto in animazione e gestione attività per età e capacità diverse.&lt;/li&gt;
-      &lt;li&gt;Formazione su sicurezza, primo soccorso e defibrillatore.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 &lt;video controls width=&quot;100%&quot;&gt;
-  &lt;source src=&quot;https://tomateleonora.github.io/scs2026bozza/SCS%20level1_Melara%20si%20muove%20(Video%20per%20dispositivi%20mobili)%20(1).mp4&quot; type=&quot;video/mp4&quot;&gt;
-  Il tuo browser non supporta il video.
-&lt;/video&gt;&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;LUCA GHERBAZ — trieste.usacli@acli.it&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="proj_TMP" tags="" position="750,550" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Via Settefontane 52/1 - Trieste&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Supporto ad attività di prossimità e relazione (stare bene insieme, accoglienza, supporto).&lt;/li&gt;
-      &lt;li&gt;Affiancamento nella realizzazione di attività e iniziative del progetto.&lt;/li&gt;
-      &lt;li&gt;Sviluppo di competenze relazionali e organizzative sul campo.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Costanza Iannone — friuliveneziagiulia@ascmail.it — 040761683 – 3478705828&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="proj_CUL" tags="" position="875,550" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Zveza slovenskih kulturnih društev ETS — Via San Francesco 20 — Trieste&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Supporto nell’organizzazione di attività culturali e iniziative per il territorio.&lt;/li&gt;
-      &lt;li&gt;Aiuto in comunicazione/promozione e gestione operativa di eventi.&lt;/li&gt;
-      &lt;li&gt;Lavoro in team per progettare e realizzare attività per giovani e comunità.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Costanza Iannone — friuliveneziagiulia@ascmail.it — 040761683 – 3478705828&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="proj_CYB" tags="" position="1000,550" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Via Fabio Severo 31, 34133 Trieste&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Workshop e incontri su cittadinanza attiva (temi sociali/culturali/ambientali).&lt;/li&gt;
-      &lt;li&gt;Progetto di gruppo: cortometraggio contro odio online.&lt;/li&gt;
-      &lt;li&gt;Ideazione attività + gestione social per promuovere buone pratiche.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Costanza Iannone — friuliveneziagiulia@ascmail.it — 040761683 – 3478705828&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="proj_PUP" tags="" position="1125,550" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Strada Per Vienna 33 (TS)&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Supporto nell’organizzazione pratica di eventi e iniziative sportive.&lt;/li&gt;
-      &lt;li&gt;Comunicazione e promozione (anche social) di attività e appuntamenti.&lt;/li&gt;
-      &lt;li&gt;Lavoro di squadra tra sport e coinvolgimento del territorio.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Costanza Iannone — friuliveneziagiulia@ascmail.it — 040761683 – 3478705828&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="proj_PRO" tags="" position="1250,550" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Via Settefontane 52/1 - Trieste&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Raccontare storie: contenuti, testimonianze, comunicazione di progetto.&lt;/li&gt;
-      &lt;li&gt;Affiancamento nella progettazione e realizzazione di attività/azioni.&lt;/li&gt;
-      &lt;li&gt;Competenze creative + organizzative (teamwork vero, non teoria).&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Costanza Iannone — friuliveneziagiulia@ascmail.it — 040761683 – 3478705828&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="proj_EIC" tags="" position="625,675" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Via Cavana 15 (Caritas Diocesana) + Via dell’Istria 73/A (Refettorio Giorgia Monti) — Trieste&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Esperienza di cittadinanza attiva e solidarietà (stile Caritas).&lt;/li&gt;
-      &lt;li&gt;Supporto in attività e servizi alla persona, con focus sulla relazione.&lt;/li&gt;
-      &lt;li&gt;Lavoro sul campo tra comunità, prossimità e inclusione.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;EMMANUELE NATOLI — emmanuelenatoli@caritastrieste.it — 040.3185521&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="16" name="proj_GSR" tags="" position="500,675" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Via Cavana 15 - 34121 Trieste&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Supporto in centri estivi e attività educative rivolte a minori (stile Caritas).&lt;/li&gt;
-      &lt;li&gt;Proposte ludico-ricreative e affiancamento nelle attività quotidiane.&lt;/li&gt;
-      &lt;li&gt;Esperienza forte su relazione, cura, prossimità e cittadinanza attiva.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;EMMANUELE NATOLI — emmanuelenatoli@caritastrieste.it — 040.3185521&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="17" name="proj_AIN" tags="" position="750,675" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Oratorio Parrocchiale — Via del Duomo, 10 — 33033 Codroipo (UD)&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Programmazione e realizzazione di attività didattiche, ludiche e ricreative.&lt;/li&gt;
-      &lt;li&gt;Doposcuola “Pomeriggi Insieme” + supporto ad attività per ragazzi.&lt;/li&gt;
-      &lt;li&gt;Affiancamento nelle iniziative estive e nei momenti di animazione.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Pandolfo Gino — info@parrocchiacodroipo.it — 0432906008&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="18" name="proj_MAT" tags="" position="875,675" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Via A. Zanon, 10 — Udine&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Affiancamento educativo tra scuola/doposcuola e famiglie.&lt;/li&gt;
-      &lt;li&gt;Supporto in studio, compiti, laboratori e socializzazione.&lt;/li&gt;
-      &lt;li&gt;Attività estive (Giocolab) + animazione del tempo libero.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Palmira De Fortunati — direzione@convitto-mtempio.it — 0432504374&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="19" name="proj_AMP" tags="" position="1000,675" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Udine — Punto Luce / Doposcuola Tiepolo (Via del Pioppo 55) + Officine Giovani (Piazzale Valle del But 3)&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Affiancamento équipe educative con minori: gioco, lettura, laboratori creativi.&lt;/li&gt;
-      &lt;li&gt;Supporto scolastico e compiti (Doposcuola Tiepolo).&lt;/li&gt;
-      &lt;li&gt;Attività culturali ed eventi con giovani (Officine Giovani).&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Costanza Iannone — friuliveneziagiulia@ascmail.it — 040761683 – 3478705828&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="20" name="proj_CSG" tags="" position="1125,675" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;via Poscolle 36/c Udine&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Affiancamento in bottega: ordini, controllo merce, scaffali e scadenze.&lt;/li&gt;
-      &lt;li&gt;Supporto in cassa e accoglienza, spiegando prodotti e progetti equosolidali.&lt;/li&gt;
-      &lt;li&gt;Possibile supporto a serate/iniziative informative.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Francesco Zinzone&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="21" name="proj_SPV" tags="" position="1250,675" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Via Divisione Julia, 34 — 33078 San Vito al Tagliamento (PN)&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Promozione sport e stili di vita sani per giovani 5–19 anni (provincia PN).&lt;/li&gt;
-      &lt;li&gt;Supporto a organizzazione attività sportive/ludico-motorie/educative.&lt;/li&gt;
-      &lt;li&gt;Collaborazione con associazioni ed enti locali + mappatura bisogni territoriali.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;—&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="22" name="proj_RIN" tags="" position="1375,675" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;&lt;span class=&quot;projValue&quot;&gt;Via E. De Amicis 10, 34079, Staranzano (GO)&lt;/span&gt;&lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Attività educative e ludico-ricreative per minori (supporto a educatori/animatori).&lt;/li&gt;
-      &lt;li&gt;Supporto compiti e accompagnamento nelle attività durante il periodo scolastico.&lt;/li&gt;
-      &lt;li&gt;Aiuto in iniziative che favoriscono socialità e crescita socio-affettiva.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;projRow&quot;&gt;&lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Pandolfo Gino&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="23" name="proj_ALI" tags="" position="500,800" size="100,100">&lt;div class=&quot;projBlock&quot;&gt;
-  &lt;div class=&quot;projRow&quot;&gt;
-    &lt;span class=&quot;projLabel&quot;&gt;📍 Sede&lt;/span&gt;
-    &lt;span class=&quot;projValue&quot;&gt;Associazione Liberi di Volare 2012 OdV — Via Strada di Fiume 527, Trieste&lt;/span&gt;
-  &lt;/div&gt;
+ </tw-passagedata><tw-passagedata pid="8" name="proj_SRI" tags="" position="500,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;div class=&quot;projRow&quot;&gt;
-    &lt;span class=&quot;projLabel&quot;&gt;⏱️ Impegno&lt;/span&gt;
-    &lt;span class=&quot;projValue&quot;&gt;12 mesi • 5 giorni/settimana • 6 ore/settimana (30 mensili)&lt;/span&gt;
-  &lt;/div&gt;
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Scacco,%20rimbalzo%20e%20inclusione.png&quot; class=&quot;projImage&quot;&gt;
 
-  &lt;div class=&quot;projRow&quot;&gt;
-    &lt;span class=&quot;projLabel&quot;&gt;⚙️ Cosa farai&lt;/span&gt;
-    &lt;ul class=&quot;projList&quot;&gt;
-      &lt;li&gt;Affiancamento nella cura e alimentazione di rondoni, rondini e balestrucci (insettivori).&lt;/li&gt;
-      &lt;li&gt;Pulizia/riordino dei nidi e dei locali di stabulazione.&lt;/li&gt;
-      &lt;li&gt;Supporto alla riabilitazione (palestra di volo) e partecipazione alle liberazioni.&lt;/li&gt;
-      &lt;li&gt;Aiuto in eventi, didattica e sensibilizzazione + promozione sui social.&lt;/li&gt;
-      &lt;li&gt;Supporto a cartelle cliniche e inserimento dati sulla piattaforma regionale fauna selvatica.&lt;/li&gt;
-    &lt;/ul&gt;
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
   &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="9" name="proj_MSM" tags="" position="625,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;div class=&quot;projRow&quot;&gt;
-    &lt;span class=&quot;projLabel&quot;&gt;🎬 Mini-video&lt;/span&gt;
-    &lt;div class=&quot;projVideoNote&quot;&gt;Incolla qui l’embed YouTube/Vimeo oppure un tag &amp;lt;video&amp;gt; (mp4).&lt;/div&gt;
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Melara%20si%20muove.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
   &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="proj_TMP" tags="" position="750,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;div class=&quot;projRow&quot;&gt;
-    &lt;span class=&quot;projLabel&quot;&gt;☎️ Contatti&lt;/span&gt;
-    &lt;div class=&quot;projContacts&quot;&gt;Silvana Di Mauro — liberidivolare.info@gmail.com — 345 5273513&lt;/div&gt;
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_The%20Melting%20Pot%20202627.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="proj_CUL" tags="" position="875,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Culturando!.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="proj_CYB" tags="" position="1000,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Cyber%20Community%20TS.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="proj_PUP" tags="" position="1125,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Power%20Up.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="proj_PRO" tags="" position="1250,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Protagonisti%20noi%202.0.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="proj_EIC" tags="" position="625,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Energie%20in%20circolo.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="16" name="proj_GSR" tags="" position="500,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Giovani%20sinergie%20rinnovabili.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="17" name="proj_AIN" tags="" position="750,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Animare%20all&#39;incontro.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="18" name="proj_MAT" tags="" position="875,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Maria%20al%20Tempio.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="19" name="proj_AMP" tags="" position="1000,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Amplifica.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="20" name="proj_CSG" tags="" position="1125,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Consumi%20o%20scegli.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="21" name="proj_SPV" tags="" position="1250,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Sport,%20palestra%20di%20Vita.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="22" name="proj_RIN" tags="" position="1375,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_RinnovaMenti.png&quot; class=&quot;projImage&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="23" name="proj_ALI" tags="" position="500,800" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
+  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Ti%20regalo%20nuove%20ali.png&quot;&gt;
+
+  &lt;div class=&quot;unlockFooter&quot;&gt;
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+    &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
