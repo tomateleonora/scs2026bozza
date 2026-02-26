@@ -9,38 +9,65 @@
 </head>
 <body>
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play SCS2026.</tw-noscript></noscript></tw-story>
-<tw-storydata name="SCS2026" startnode="1" creator="Twine" creator-version="2.11.1" format="Harlowe" format-version="3.3.9" ifid="53A09E96-1578-4CFC-8B54-A9260222E79E" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">html, body { margin: 0; padding: 0; width: 100%; }
-body { overflow-x: hidden; }
+<tw-storydata name="SCS2026" startnode="1" creator="Twine" creator-version="2.11.1" format="Harlowe" format-version="3.3.9" ifid="53A09E96-1578-4CFC-8B54-A9260222E79E" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* =========================================================
+   RESET / BASE
+   ========================================================= */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;            /* niente scroll pagina */
+  overscroll-behavior: none;   /* niente “rimbalzo” */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
 img, video, iframe { max-width: 100%; height: auto; }
-#story { max-width: 900px; margin: 0 auto; padding: 16px; box-sizing: border-box; }
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/* (Pixel vibe) */
+* { image-rendering: pixelated; }
 
-/* =========================
-   FIX SPAZI / BUCHI
-   ========================= */
-tw-passage h1{
-  margin:0 0 10px 0 !important;
-  font-size:18px;
+/* =========================================================
+   FIX BUCHI HARLOWE
+   ========================================================= */
+tw-passage p { margin: 0 !important; }
+tw-expression, tw-hook, tw-collapsed { margin: 0 !important; padding: 0 !important; }
+tw-passage p > br:only-child { display: none !important; }
+
+/* =========================================================
+   STAGE A SCHERMO (il “display” del gioco)
+   - blocca tutto in 1 schermata
+   - centra il pannello
+   ========================================================= */
+tw-story {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;            /* niente scroll interno */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* safe area per notch + un po’ di respiro */
+  padding:
+    max(10px, env(safe-area-inset-top))
+    max(10px, env(safe-area-inset-right))
+    max(10px, env(safe-area-inset-bottom))
+    max(10px, env(safe-area-inset-left));
+
+  font-family: "Press Start 2P", monospace;
+  background: #87CEEB;
+  color: #2a2a2a;
 }
-tw-passage p{ margin:0 !important; }
-tw-expression, tw-hook, tw-collapsed{ margin:0 !important; padding:0 !important; }
-tw-passage p > br:only-child{ display:none !important; }
 
-/* =========================
-   TEMA CIELO + NUVOLE
-   ========================= */
-tw-story{
-  font-family:"Press Start 2P", monospace;
-  background:#87CEEB;
-  color:#2a2a2a;
-}
+/* Nuvole (overlay fisso) */
 tw-story::before{
   content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  opacity:.7;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .7;
   background:
     radial-gradient(circle at 12% 16%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px),
     radial-gradient(circle at 16% 16%, rgba(255,255,255,.98) 0 24px, rgba(255,255,255,0) 25px),
@@ -50,135 +77,341 @@ tw-story::before{
     radial-gradient(circle at 67% 22%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px);
 }
 
-/* =========================
-   FINESTRA “PLATFORM UI”
-   ========================= */
-tw-passage{
-  max-width:860px;
-  margin:70px auto 64px;
-  padding:40px;
-  background:#FFF4C7;
-  border:5px solid #2a2a2a;
-  box-shadow:10px 10px 0 #2a2a2a;
-  line-height:1.7;
+/* =========================================================
+   PASSAGE = PANNELLO GIALLO (NON 100svh!)
+   - alto quanto contenuto
+   - ma non supera lo schermo
+   ========================================================= */
+tw-passage {
+  width: min(900px, 100%);
+  max-height: 100%;
+  margin: 0 !important;
+
+  background: #FFF4C7;
+  border: 5px solid #2a2a2a;
+  box-shadow: 10px 10px 0 #2a2a2a;
+  border-radius: 0;
+
+  padding: clamp(10px, 2vw, 14px) !important;
+  overflow: hidden;                    /* niente scroll */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(6px, 1.4vh, 10px);
+
+  line-height: 1.45;
 }
 
-/* =========================
-   BOTTONI (link)
-   ========================= */
+/* Titoli compatti e responsive */
+tw-passage h1{
+  margin: 0 0 10px 0 !important;
+  font-size: clamp(14px, 2.2vw, 16px);
+}
+
+/* Testo base un filo più elastico */
+tw-passage, tw-passage p, tw-passage span{
+  font-size: clamp(11px, 1.9vw, 12px);
+}
+
+/* =========================================================
+   BOTTONI
+   ========================================================= */
 tw-link{
-  display:block;
-  margin:8px 0;
-  padding:14px 16px;
-  border:4px solid #2a2a2a;
-  box-shadow:6px 6px 0 #2a2a2a;
-  background:#2ECC71;
-  color:#1b1b1b;
-  text-decoration:none;
-  cursor:pointer;
-  transition:transform 120ms ease, filter 120ms ease;
+  display: block;
+  margin: clamp(6px, 1vh, 8px) 0;
+  padding: clamp(10px, 2vw, 12px) clamp(10px, 2vw, 12px);
+
+  border: 4px solid #2a2a2a;
+  box-shadow: 6px 6px 0 #2a2a2a;
+
+  background: #2ECC71;
+  color: #1b1b1b;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: transform 120ms ease, filter 120ms ease;
+  line-height: 1.2;
+  word-break: break-word;
 }
-tw-link:hover{
-  background:#FF9F1C;
-  transform:translateY(-2px);
-}
-tw-link:active{
-  transform:translateY(0);
-  filter:brightness(.98);
+tw-link:hover{ background:#FF9F1C; transform: translateY(-2px); }
+tw-link:active{ transform: translateY(0); filter: brightness(.98); }
+
+/* =========================================================
+   RISULTATO / CARD
+   ========================================================= */
+.unlockBox{
+  flex:1;
+  min-height:0;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  overflow:hidden;
+
+  padding:0;
+
+  background:transparent;
+  border:none;
+  box-shadow:none;
 }
 
-/* =========================
-   RISULTATO: PROGETTO SBLOCCATO
-   ========================= */
-.unlockBox{
-  margin-top:14px;
-  padding:26px;
-  background:#fff;
-  border:5px solid #2a2a2a;
-  box-shadow:8px 8px 0 #2a2a2a;
-}
 .unlockBadge{
-  display:inline-block;
+  display: inline-block;
+  align-self: flex-start;
   background:#2ECC71;
   color:#1b1b1b;
   border:4px solid #2a2a2a;
   box-shadow:6px 6px 0 #2a2a2a;
   padding:10px 12px;
-  font-size:12px;
+  font-size: clamp(10px, 1.6vw, 11px);
 }
+
 .unlockTitle{
-  margin-top:16px;
-  font-size:28px;     /* titolo progetto più grande */
-  color:#FF8C00;
+  margin-top: 10px;
+  font-size: clamp(16px, 3vw, 20px);
+  color: #FF8C00;
 }
+
 .unlockInfo{
-  margin-top:14px;
-  font-size:13px;     /* testo più piccolo */
-  line-height:1.65;
+  margin-top: 10px;
+  font-size: clamp(11px, 1.9vw, 12px);
+  line-height: 1.45;
 }
+
 .unlockDivider{
-  margin:18px 0 10px;
-  height:0;
-  border-top:4px dashed #2a2a2a;
+  margin: 12px 0 8px;
+  height: 0;
+  border-top: 4px dashed #2a2a2a;
 }
-.unlockActions{
-  margin-top:18px;
+
+.unlockFooter{
+  margin-top: 8px;
+  padding-top: 4px;
+}
+
+/* Immagine risultato: non deve mai obbligare a scroll */
+.projImage{
+  width:auto;
+  max-width:420px;
+  max-height:65svh;
+  margin:12px auto;
+  display:block;
+
+  border:none;
+  box-shadow:none;
+  
+  max-height: min(42svh, 320px);
+  object-fit: contain;
+}
+
+/* Contatti compatti */
+.projContacts{
+  text-align: center;
+  font-size: clamp(11px, 1.9vw, 12px);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* Link infoserviziocivile */
+.scsLink{
+  text-align:center;
+  font-size:11px;
+  line-height:1.2;
+  margin-top:4px
+}
+.scsLink a{
+  color: #2a2a2a;
+  text-decoration: underline;
+}
+
+/* =========================================================
+   MOBILE TUNING (extra)
+   ========================================================= */
+@media (max-width: 600px){
+  tw-passage{
+    border-width: 4px;
+    box-shadow: 6px 6px 0 #2a2a2a;
+  }
+  tw-link{
+    border-width: 3px;
+    box-shadow: 4px 4px 0 #2a2a2a;
+  }
+  .unlockBox{
+    border-width: 4px;
+    box-shadow: 6px 6px 0 #2a2a2a;
+  }
+.projImage{
+  width: auto;
+  max-width: min(85vw, 520px);
+  height: auto;
+  display: block;
+  margin: 10px auto;
+
+  border: none;
+  box-shadow: none;
+
+  max-height: 55svh;
+  object-fit: contain;
+}
+.imageClean{
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* =========================
-   STILE SCHEDE proj_XXX
+   RISULTATO: layout più “gioco”, meno vuoto
    ========================= */
-.projBlock{ font-size:13px; line-height:1.6; }
-.projRow{ margin-top:12px; }
-.projLabel{ display:block; font-weight:700; margin-bottom:6px; }
-.projValue{ display:block; }
-.projList{ margin:8px 0 0 18px; padding:0; }
-.projList li{ margin:6px 0; }
-.projVideoNote{ font-size:12px; opacity:.85; }
-.projContacts{ font-size:12px; }
+.unlockBox{
+  /* meno spazio interno = tutto più grande */
+  padding: 10px 12px !important;
 
-/* video embedded: respira e resta dentro la card */
-.projBlock iframe,
-.projBlock video{
-  width:100%;
-  max-width:100%;
-  border:4px solid #2a2a2a;
-  box-shadow:6px 6px 0 #2a2a2a;
-  margin-top:8px;
+  /* centra meglio i contenuti */
+  align-items: center;
+  text-align: center;
+
+  /* se vuoi un riquadro più “leggero”, puoi anche ridurre qui:
+     border-width: 4px; box-shadow: 6px 6px 0 #2a2a2a;
+  */
 }
 
-/* pixel feel */
-*{ image-rendering:pixelated; }
+/* Badge resta in alto a sinistra (carino) */
+.unlockBadge{
+  align-self: flex-start;
+  margin-bottom: 8px;
+}
 
+/* Immagine: grande, senza cornice, senza ombra */
+.projImage,
+.projImage.imageClean{
+  width: min(92%, 560px) !important;     /* più grande */
+  max-width: 92% !important;
+  height: auto;
 
-/* RESPONSIVE FIX GLOBAL */
-html, body { width: 100%; overflow-x: hidden; }
-*, *::before, *::after { box-sizing: border-box; }
+  margin: 10px auto 6px !important;
 
-tw-story, tw-passage { max-width: 100%; }
+  border: none !important;
+  box-shadow: none !important;
 
-/* La tua "finestra" su mobile deve respirare */
-@media (max-width: 600px) {
-  tw-passage {
-    margin: 16px auto !important;
-    padding: 18px !important;
-    border-width: 4px !important;
-    box-shadow: 6px 6px 0 #2a2a2a !important; /* stesso colore, shadow più piccola */
-  }
+  /* la cosa importante per poster verticali: limitiamo l'altezza */
+  max-height: 60svh !important;
+  object-fit: contain;
+  display: block;
+}
 
-  /* Titolo progetto grande ma non fuori schermo */
-  .unlockTitle { font-size: 20px !important; }
-  .unlockBadge { font-size: 10px !important; }
+/* Footer: meno “aria” sotto */
+.unlockFooter{
+  margin-top: 6px !important;
+  padding-top: 0 !important;
+  width: 100%;
+}
 
-  /* Evita che liste/righe lunghe allarghino la pagina */
-  .projValue, .projContacts { word-break: break-word; }
+/* Link “Scopri tutti i progetti…” più compatto */
+.scsLink{
+  margin-top: 4px !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
 
-  /* Video/iframe davvero responsive */
-  .projBlock iframe, .projBlock video {
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 16 / 9;
-  }
+/* Pulsante “Rifai il quiz”: trasformo il link di Harlowe in bottone e tolgo spazi */
+.unlockActions{
+  margin-top: 8px !important;
+}
+.unlockActions tw-link{
+  display: inline-block !important;  /* non a tutta larghezza */
+  margin: 0 !important;
+}
+/* ===== OVERRIDE FORTE SCHERMATA RISULTATO ===== */
+
+/* 1) La cornice enorme che vedi è la unlockBox: alleggeriamola o togliamola */
+tw-story .unlockBox{
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 10px !important;
+}
+
+/* Se vuoi comunque un “fondino” leggero dietro il contenuto (opzionale):
+tw-story .unlockBox{
+  background: rgba(255,255,255,.9) !important;
+  border: 4px solid #2a2a2a !important;
+  box-shadow: 6px 6px 0 #2a2a2a !important;
+  padding: 10px 12px !important;
+}
+*/
+
+/* 2) Immagine: grande, centrata, senza bordo/ombra */
+tw-story .unlockBox img.projImage{
+  width: min(96%, 620px) !important;
+  max-width: 96% !important;
+  height: auto !important;
+
+  border: 0 !important;
+  box-shadow: none !important;
+
+  max-height: 62svh !important;     /* aumenta qui se la vuoi ancora più grande */
+  object-fit: contain !important;
+
+  margin: 0 auto !important;
+  display: block !important;
+}
+
+/* 3) Footer compatto */
+tw-story .unlockFooter{
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+/* 4) Testo “Scopri tutti i progetti…” più stretto */
+tw-story .scsLink{
+  margin-top: 2px !important;
+  font-size: 11px !important;
+  line-height: 1.15 !important;
+}
+
+/* 5) Bottone “Rifai il quiz” NON a tutta larghezza */
+tw-story .unlockActions tw-link{
+  display: inline-block !important;
+  width: auto !important;
+  margin-top: 6px !important;
+}
+
+/* ===== SCHERMATA RISULTATO: niente pannello gigante ===== */
+
+tw-story .unlockBox{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  align-items: center;
+}
+
+/* poster molto più grande */
+tw-story .unlockBox img{
+  max-height: 70svh !important;
+  width: auto !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* spazio sotto molto ridotto */
+tw-story .unlockFooter{
+  margin-top: 4px !important;
+}
+
+/* bottone più compatto */
+tw-story .unlockActions tw-link{
+  width: auto !important;
+  display: inline-block !important;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">(function () {
   var meta = document.querySelector('meta[name="viewport"]');
   if (!meta) {
@@ -224,9 +457,7 @@ tw-story, tw-passage { max-width: 100%; }
   (display: _scheda)
  </tw-passagedata><tw-passagedata pid="8" name="proj_SRI" tags="" position="500,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
-
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Scacco,%20rimbalzo%20e%20inclusione.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Scacco,%20rimbalzo%20e%20inclusione.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -239,7 +470,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="9" name="proj_MSM" tags="" position="625,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Melara%20si%20muove.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Melara%20si%20muove.png&quot; class=&quot;projImage imageClean&quot;&gt;
 
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
@@ -253,8 +484,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="proj_TMP" tags="" position="750,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_The%20Melting%20Pot%20202627.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_The%20Melting%20Pot%20202627.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -267,8 +497,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="proj_CUL" tags="" position="875,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Culturando!.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Culturando!.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -281,8 +510,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="proj_CYB" tags="" position="1000,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Cyber%20Community%20TS.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Cyber%20Community%20TS.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -295,8 +523,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="proj_PUP" tags="" position="1125,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Power%20Up.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Power%20Up.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -309,8 +536,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="proj_PRO" tags="" position="1250,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Protagonisti%20noi%202.0.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Protagonisti%20noi%202.0.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -323,8 +549,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="proj_EIC" tags="" position="625,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Energie%20in%20circolo.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Energie%20in%20circolo.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -337,8 +562,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="16" name="proj_GSR" tags="" position="500,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Giovani%20sinergie%20rinnovabili.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Giovani%20sinergie%20rinnovabili.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -351,8 +575,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="17" name="proj_AIN" tags="" position="750,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Animare%20all&#39;incontro.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Animare%20all&#39;incontro.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -365,8 +588,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="18" name="proj_MAT" tags="" position="875,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Maria%20al%20Tempio.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Maria%20al%20Tempio.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -379,8 +601,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="19" name="proj_AMP" tags="" position="1000,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Amplifica.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Amplifica.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -393,8 +614,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="20" name="proj_CSG" tags="" position="1125,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Consumi%20o%20scegli.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Consumi%20o%20scegli.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -407,8 +627,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="21" name="proj_SPV" tags="" position="1250,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Sport,%20palestra%20di%20Vita.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Sport,%20palestra%20di%20Vita.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -421,8 +640,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="22" name="proj_RIN" tags="" position="1375,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_RinnovaMenti.png&quot; class=&quot;projImage&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_RinnovaMenti.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
@@ -435,8 +653,7 @@ tw-story, tw-passage { max-width: 100%; }
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="23" name="proj_ALI" tags="" position="500,800" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Ti%20regalo%20nuove%20ali.png&quot;&gt;
-
+  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Ti%20regalo%20nuove%20ali.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
