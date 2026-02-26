@@ -412,15 +412,109 @@ tw-story .unlockFooter{
 tw-story .unlockActions tw-link{
   width: auto !important;
   display: inline-block !important;
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">(function () {
-  var meta = document.querySelector('meta[name="viewport"]');
-  if (!meta) {
-    meta = document.createElement('meta');
-    meta.name = "viewport";
-    document.head.appendChild(meta);
+}
+/* =========================
+   VIEWPORT MOBILE: usa dvh (più stabile su Safari/Chrome mobile)
+   ========================= */
+html, body {
+  height: 100%;
+}
+
+tw-story{
+  height: 100dvh;   /* invece di 100% */
+}
+
+/* =========================
+   PASSAGE: lo scalano il JS -> NON deve tagliare
+   ========================= */
+tw-passage{
+  /* togliamo il “taglio” interno: ci pensa lo scaling */
+  max-height: none !important;
+  overflow: visible !important;
+
+  /* scala controllata da variabile */
+  transform: scale(var(--ui-scale, 1));
+  transform-origin: center center;
+  will-change: transform;
+
+  /* su mobile meglio un po’ meno largo */
+  width: min(900px, 92vw) !important;
+}
+
+/* =========================
+   BOTTONI: niente “stretti poi larghi” + testo sempre a capo
+   ========================= */
+tw-link{
+  display: block !important;
+  width: 100% !important;          /* sempre pieni */
+  white-space: normal !important;  /* permette a capo */
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  line-height: 1.25 !important;
+  margin: clamp(6px, 1vh, 8px) 0 !important;
+}
+
+/* Se una domanda è lunga, riduciamo un filo il padding su mobile */
+@media (max-width: 600px){
+  tw-link{
+    padding: 10px 10px !important;
+    font-size: clamp(10px, 3.3vw, 12px) !important;
   }
-  meta.content = "width=device-width, initial-scale=1, viewport-fit=cover";
-})();</script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
+
+  tw-passage{
+    gap: 8px !important;
+  }
+
+  tw-passage h1{
+    margin-bottom: 8px !important;
+  }
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">(() => {
+  const PAD = 10; // “respiro” dai bordi (px)
+
+  function getPassage() {
+    const story = document.querySelector("tw-story");
+    if (!story) return null;
+    return story.querySelector("tw-passage");
+  }
+
+  function fitPassageToScreen() {
+    const passage = getPassage();
+    if (!passage) return;
+
+    // reset per misurare in scala 1
+    passage.style.setProperty("--ui-scale", 1);
+    passage.style.transform = "scale(1)";
+
+    // misura reale
+    const rect = passage.getBoundingClientRect();
+
+    // viewport (dvh gestito dal browser; innerHeight è ok per il calcolo pratico)
+    const availW = Math.max(100, window.innerWidth - PAD * 2);
+    const availH = Math.max(100, window.innerHeight - PAD * 2);
+
+    // scala per stare dentro sia in larghezza che in altezza
+    const scale = Math.min(1, availW / rect.width, availH / rect.height);
+
+    passage.style.setProperty("--ui-scale", scale.toFixed(4));
+    passage.style.transform = `scale(${scale.toFixed(4)})`;
+  }
+
+  // Ricalcola quando cambia orientamento/viewport
+  window.addEventListener("resize", () => requestAnimationFrame(fitPassageToScreen));
+  window.addEventListener("orientationchange", () => setTimeout(fitPassageToScreen, 80));
+
+  // Ricalcola quando cambia passage (Harlowe “ridisegna” il DOM)
+  const story = document.querySelector("tw-story");
+  if (story) {
+    const mo = new MutationObserver(() => requestAnimationFrame(fitPassageToScreen));
+    mo.observe(story, { childList: true, subtree: true });
+  }
+
+  // Primo fit
+  document.addEventListener("DOMContentLoaded", fitPassageToScreen);
+  setTimeout(fitPassageToScreen, 0);
+})();
+</script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
 (link: &quot;Inizia&quot;)[
 (set: $provincia to &quot;&quot;)
 (set: $a2 to &quot;&quot;)(set: $a3 to &quot;&quot;)(set: $a4 to &quot;&quot;)(set: $a5 to &quot;&quot;)
