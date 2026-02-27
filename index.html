@@ -14,52 +14,34 @@
 :root {
   --appH: 100svh;
   --ui-scale: 1;
+  --sky: #87CEEB;
+  --panel: #FFF4C7;
+  --ink: #2a2a2a;
+  --stroke: #2a2a2a;
+  --btn: #34d399;
+  --reward: #FFD700;
   
-  /* COLORI GIOCO */
-  --sky: #87CEEB; /* Azzurro Cielo */
-  --panel: #FFF4C7; /* Crema Pannello */
-  --ink: #2a2a2a; /* Nero Testo */
-  --stroke: #2a2a2a; /* Nero Bordo */
-  --btn: #34d399; /* Verde Bottoni Scelte */
-  --reward: #FFD700; /* Giallo Oro Bottone Scarica */
-  
-  --pad: 16px;
-  --gap: 12px;
-  --btnPadY: 12px;
-  --btnPadX: 10px;
-  --titleSize: clamp(16px, 2.5vw, 20px);
-  --imgMaxH: clamp(180px, 35svh, 350px);
+  --pad: 18px;
+  --gap: 15px;
+  --titleSize: clamp(16px, 2.5vw, 22px);
 }
 
-html.compact {
-  --pad: 10px;
-  --gap: 8px;
-  --imgMaxH: 30svh;
-}
-
-html.superCompact {
-  --pad: 6px;
-  --gap: 4px;
-  --imgMaxH: 25svh;
-  --titleSize: 14px;
-}
+/* Modalità compatte forzate dal JS */
+html.compact { --pad: 12px; --gap: 10px; }
+html.superCompact { --pad: 8px; --gap: 5px; --titleSize: 14px; }
 
 @supports not (height: 100svh) { :root { --appH: 100vh; } }
 
 html, body {
-  margin: 0; padding: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-  background: var(--sky);
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  overflow: hidden; background: var(--sky);
   font-family: "Press Start 2P", monospace;
-  
-  /* Image-rendering per effetto pixelato universale */
-  image-rendering: pixelated; 
+  image-rendering: pixelated;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
-/* RESET TESTO HARLOWE: Tutto Nero su sfondo Crema */
+/* RESET TESTO: Tutto Nero e Leggibile */
 tw-story, tw-passage, tw-passage *, tw-expression, tw-hook, p, span {
   color: #000 !important;
   text-shadow: none !important;
@@ -68,40 +50,29 @@ tw-story, tw-passage, tw-passage *, tw-expression, tw-hook, p, span {
 tw-story {
   position: fixed; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  padding: 15px;
-  background: var(--sky);
-  
-  /* Isolation per gestire correttamente i livelli (z-index) */
-  isolation: isolate; 
+  padding: 15px; background: var(--sky);
+  isolation: isolate;
 }
 
-/* =========================================
-   NUVOLE PIXEL-ART NELLO SFONDO
-   ========================================= */
+/* NUVOLE DI MARIO */
 tw-story::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none; /* Le nuvole non bloccano i clic */
-  opacity: 0.7; /* Leggermente trasparenti */
-  z-index: -1; /* Posizionate DIETRO il pannello di gioco */
-  
-  /* Grafica delle nuvole generata con gradienti radiali */
+  content: ""; position: fixed; inset: 0; pointer-events: none;
+  opacity: 0.7; z-index: -1;
   background:
-    radial-gradient(circle at 12% 16%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px),
-    radial-gradient(circle at 16% 16%, rgba(255,255,255,.98) 0 24px, rgba(255,255,255,0) 25px),
-    radial-gradient(circle at 21% 16%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px),
-    radial-gradient(circle at 58% 22%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px),
-    radial-gradient(circle at 62% 22%, rgba(255,255,255,.98) 0 24px, rgba(255,255,255,0) 25px),
-    radial-gradient(circle at 67% 22%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px);
+    radial-gradient(circle at 12% 16%, #fff 0 18px, transparent 19px),
+    radial-gradient(circle at 16% 16%, #fff 0 24px, transparent 25px),
+    radial-gradient(circle at 21% 16%, #fff 0 18px, transparent 19px),
+    radial-gradient(circle at 58% 22%, #fff 0 18px, transparent 19px),
+    radial-gradient(circle at 62% 22%, #fff 0 24px, transparent 25px),
+    radial-gradient(circle at 67% 22%, #fff 0 18px, transparent 19px);
 }
 
 /* PANNELLO DI GIOCO */
 tw-passage {
   width: min(900px, 94vw);
-  max-height: calc(var(--appH) - 30px) !important;
+  max-height: calc(var(--appH) - 40px) !important;
   background: var(--panel);
-  border: 4px solid var(--stroke);
+  border: 5px solid var(--stroke);
   box-shadow: 8px 8px 0 var(--stroke);
   padding: var(--pad) !important;
   display: flex; flex-direction: column;
@@ -109,152 +80,180 @@ tw-passage {
   overflow: hidden !important; 
   transform: scale(var(--ui-scale));
   transform-origin: center center;
-  
-  /* Invisibile all'inizio per evitare il salto visivo durante il calcolo */
-  opacity: 0; 
-  visibility: hidden;
-  transition: opacity 0.1s ease-in;
-  
-  /* Assicura che il pannello stia sopra le nuvole */
-  z-index: 1; 
+  opacity: 0; visibility: hidden;
+  z-index: 1;
 }
 
-tw-passage.is-ready {
-  opacity: 1; 
-  visibility: visible;
-}
+tw-passage.is-ready { opacity: 1; visibility: visible; }
 
-/* TITOLI (Neri e Grassetto) */
+/* TITOLI NERI E GRASSETTO */
 tw-passage > p:first-of-type, h1, h2 {
-  color: #000 !important;
-  font-weight: 700 !important;
   font-size: var(--titleSize) !important;
-  line-height: 1.4 !important;
+  font-weight: 700 !important;
   margin-bottom: 5px !important;
   display: block;
+  line-height: 1.4;
 }
 
-/* BOTTONI NORMALI (Verdi per le scelte) */
+/* BOTTONI VERDI (SCELTE) */
 tw-link {
   display: block !important;
-  padding: var(--btnPadY) var(--btnPadX) !important;
-  border: 3px solid var(--stroke) !important;
+  padding: 14px 10px !important;
+  border: 4px solid var(--stroke) !important;
   box-shadow: 4px 4px 0 var(--stroke) !important;
   background: var(--btn) !important;
-  color: #fff !important; /* Testo bianco sui bottoni verdi */
+  color: #fff !important;
   text-align: center !important;
   text-decoration: none !important;
-  font-size: 10px;
-  margin: 4px 0 !important;
+  font-size: 12px;
+  margin: 5px 0 !important;
 }
 
-/* BOX RISULTATO (Pagina finale centrata) */
-.unlockBox {
-  display: flex; flex-direction: column;
-  align-items: center; text-align: center;
+/* =========================================
+   LAYOUT A DUE COLONNE (PAGINA FINALE)
+   ========================================= */
+.unlockBox-split {
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
   justify-content: center;
-  gap: 8px; width: 100%;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.left-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.right-col {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Immagine Progetto */
+.projImage {
+  max-height: 40vh !important; /* Molto spazio in split mode */
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 .unlockBadge {
-  background: var(--stroke); color: #fff !important;
-  padding: 4px 8px; font-size: 10px; margin-bottom: 5px;
+  background: var(--stroke);
+  color: #fff !important;
+  padding: 5px 10px;
+  font-size: 10px;
 }
 
-.projImage {
-  width: auto; max-width: 100%;
-  max-height: var(--imgMaxH);
-  object-fit: contain;
-  flex-shrink: 1; /* Rimpicciolisce l'immagine per far spazio agli altri elementi */
-  margin: 0 auto;
-}
-
-/* BOTTONE ORO (Scarica) */
+/* BOTTONE ORO (SCARICA) */
 a.btnDownload {
-  display: block; width: 100%;
-  padding: 14px; background: var(--reward) !important;
-  color: #000 !important; /* Scritta nera */
-  font-weight: 700 !important; /* Grassetto */
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: var(--reward) !important;
+  color: #000 !important;
+  font-weight: 700 !important;
   border: 4px solid var(--stroke);
   box-shadow: 4px 4px 0 var(--stroke);
-  text-decoration: none; font-size: 12px;
-  margin: 8px 0;
+  text-decoration: none;
+  text-align: center;
+  font-size: 14px;
 }
 
-/* FOOTER RISULTATO */
-.scsLink { font-size: 9px; margin: 5px 0; line-height: 1.4; }
-.scsLink a { color: #000 !important; text-decoration: underline; }
-
-/* BOTTONE RIFAI IL QUIZ */
+/* BOTTONE RIFAI (ROSSO/CORALLO) */
 .unlockActions tw-link {
-  background: #ff7e5f !important; /* Colore diverso per distinzione */
+  background: #ff7e5f !important;
   color: #fff !important;
-  font-size: 9px;
-  margin-top: 10px !important;
+  font-size: 11px !important;
+  padding: 12px !important;
+  box-shadow: 4px 4px 0 var(--stroke) !important;
 }
 
-/* NAVIGAZIONE SOTTO (Indietro/Avanti generici) */
+.scsLink {
+  font-size: 9px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* NAVIGAZIONE BACK/NEXT */
 .pixelNav {
-  margin-top: auto; display: flex; gap: 8px;
-  padding-top: 8px; border-top: 2px solid var(--stroke);
-  flex-shrink: 0;
+  margin-top: auto;
+  display: flex; gap: 10px;
+  padding-top: 10px;
+  border-top: 4px solid var(--stroke);
 }
 .pixelBtn {
-  flex: 1; padding: 8px; font-family: inherit; font-size: 8px;
-  background: #eee; border: 2px solid #2a2a2a; cursor: pointer;
+  flex: 1; padding: 12px;
+  font-family: inherit; font-size: 10px;
+  background: #a7f3d0; border: 4px solid var(--stroke);
+  box-shadow: 4px 4px 0 var(--stroke);
+  cursor: pointer;
+}
+
+/* RESPONSIVE: Se lo schermo è stretto (cellulare) torna in colonna */
+@media (max-width: 650px) {
+  .unlockBox-split { flex-direction: column; gap: 10px; }
+  .projImage { max-height: 22vh !important; }
+  .right-col { gap: 8px; }
 }
 
 tw-sidebar { display: none; }
+
+tw-passage {
+  /* ... altre regole ... */
+  transform: scale(var(--ui-scale)) !important;
+  transform-origin: center top !important; /* Molto più stabile per lo scaling */
+  margin-top: 10px !important; /* Tiene un po' di distacco dal bordo superiore */
+  transition: transform 0.1s ease-out; /* Rende lo scaling fluido */
+}
+
+/* Assicurati che l'immagine non abbia dimensioni fisse che bloccano lo scaling */
+.projImage {
+  height: auto !important;
+  max-width: 100% !important;
+  flex-shrink: 1 !important;
+}
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">(() => {
   const root = document.documentElement;
   let running = false;
-  
-  // Scala minima per mantenere la leggibilità su schermi molto piccoli
-  const MIN_SCALE_LIMIT = 0.4;
-
-  function viewportH() {
-    const vv = window.visualViewport;
-    return Math.round(vv ? vv.height : window.innerHeight);
-  }
 
   function applyLockedHeight() {
-    root.style.setProperty("--appH", viewportH() + "px");
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    root.style.setProperty("--appH", vh + "px");
   }
 
   function getPassage() { return document.querySelector("tw-passage"); }
 
-  // Aggiunge la navigazione se non è una pagina di risultato
   function ensurePixelNav(p) {
     if (!p || p.querySelector(".pixelNav") || p.querySelector(".unlockBox")) return;
     const nav = document.createElement("div");
     nav.className = "pixelNav";
-    nav.innerHTML = `
-      <button class="pixelBtn" id="u-btn">⟵ INDIETRO</button>
-      <button class="pixelBtn" id="r-btn">AVANTI ⟶</button>
-    `;
+    nav.innerHTML = `<button class="pixelBtn" id="u-btn">⟵ BACK</button><button class="pixelBtn" id="r-btn">NEXT ⟶</button>`;
     p.appendChild(nav);
-    
-    // Assicurati che gli ID degli elementi di navigazione di Harlowe siano corretti se necessario
     nav.querySelector("#u-btn").onclick = () => Engine.backward();
     nav.querySelector("#r-btn").onclick = () => Engine.forward();
   }
 
   function computeScale(p) {
-    // Reset temporaneo della scala per misurare le dimensioni reali
     root.style.setProperty("--ui-scale", "1");
-    
     const story = document.querySelector("tw-story");
     const sRect = story.getBoundingClientRect();
     
-    // Area disponibile con margini di sicurezza
-    const availW = sRect.width - 30;
-    const availH = sRect.height - 30;
+    // Margine strettissimo per evitare ogni taglio
+    const availW = sRect.width - 20;
+    const availH = sRect.height - 20;
 
-    // Dimensioni reali del contenuto
     const contentH = p.scrollHeight;
-    const contentW = p.offsetWidth;
+    const contentW = p.scrollWidth;
 
-    // Calcola la scala necessaria per far entrare tutto nell'area disponibile
     return Math.min(1, availW / contentW, availH / contentH);
   }
 
@@ -266,31 +265,24 @@ tw-sidebar { display: none; }
     const p = getPassage();
     if (!p) { running = false; return; }
 
-    // Rimuove la visibilità mentre calcola la scala per evitare il salto
     p.classList.remove("is-ready");
-
     ensurePixelNav(p);
 
-    // Ciclo di riduzione: prova le modalità CSS (font e padding ridotti)
+    // Testiamo le modalità
     const modes = ["normal", "compact", "superCompact"];
-    let bestScale = 1;
+    let finalScale = 1;
 
     for (let mode of modes) {
       root.classList.remove("compact", "superCompact");
       if (mode !== "normal") root.classList.add(mode);
-      
-      // Misurazione quasi istantanea senza attendere lunghe transizioni
-      bestScale = computeScale(p);
-      
-      // Se la scala è quasi perfetta (sopra il 96%), si ferma
-      if (bestScale > 0.96) break; 
+      await new Promise(r => requestAnimationFrame(r));
+      finalScale = computeScale(p);
+      if (finalScale > 0.98) break;
     }
 
-    // Applica la scala finale con un limite minimo per garantire leggibilità
-    root.style.setProperty("--ui-scale", Math.max(MIN_SCALE_LIMIT, bestScale));
+    // Applica scala senza limiti minimi per garantire il "No Scroll"
+    root.style.setProperty("--ui-scale", finalScale);
 
-    // Ora che tutto è calcolato e posizionato, mostra la scheda
-    // Usiamo requestAnimationFrame per assicurarci che il browser abbia applicato il CSS
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         p.classList.add("is-ready");
@@ -299,26 +291,13 @@ tw-sidebar { display: none; }
     });
   }
 
-  // Listener per ricalcolare su resize della finestra o del visual viewport
   window.addEventListener("resize", fitEverything);
-  if (window.visualViewport) window.visualViewport.addEventListener("resize", fitEverything);
+  const observer = new MutationObserver(() => fitEverything());
+  observer.observe(document.querySelector("tw-story") || document.body, { childList: true, subtree: true });
   
-  // Osserva quando Harlowe cambia passaggio per ricalcolare
-  const observer = new MutationObserver((mutations) => {
-    for(let m of mutations) {
-      if(m.addedNodes.length) {
-        fitEverything();
-        break;
-      }
-    }
-  });
-  
-  const target = document.querySelector("tw-story") || document.body;
-  observer.observe(target, { childList: true, subtree: true });
-
-  // Primo avvio immediato
   fitEverything();
-})();</script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
+})();
+</script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
 (link: &quot;Inizia&quot;)[
 (set: $provincia to &quot;&quot;)
 (set: $a2 to &quot;&quot;)(set: $a3 to &quot;&quot;)(set: $a4 to &quot;&quot;)(set: $a5 to &quot;&quot;)
@@ -353,256 +332,294 @@ tw-sidebar { display: none; }
 (set: _scheda to (str:&quot;proj_&quot;, $best))
 
   (display: _scheda)
- </tw-passagedata><tw-passagedata pid="8" name="proj_SRI" tags="" position="500,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Scacco,%20rimbalzo%20e%20inclusione.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;div class=&quot;unlockActions&quot;&gt; &lt;!-- ✅ BOTTONE PDF --&gt; &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/pdf/scheda-sri.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda &lt;/a&gt;
-    &lt;div class=&quot;scsLink&quot;&gt;
-      Scopri tutti i progetti su&lt;br&gt;
-      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
-    &lt;/div&gt;
+ </tw-passagedata><tw-passagedata pid="8" name="proj_SRI" tags="" position="500,550" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Scacco,%20rimbalzo%20e%20inclusione.png&quot; class=&quot;projImage&quot;&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="9" name="proj_MSM" tags="" position="625,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Melara%20si%20muove.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-msm.PDF&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
-    &lt;div class=&quot;scsLink&quot;&gt;
-      Scopri tutti i progetti su&lt;br&gt;
-      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="proj_TMP" tags="" position="750,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_The%20Melting%20Pot%20202627.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-tmp.pdf&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-tmp.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="proj_CUL" tags="" position="875,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Culturando!.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-cul.pdf&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="9" name="proj_MSM" tags="" position="625,550" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Melara%20si%20muove.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-melara.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="proj_CYB" tags="" position="1000,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="proj_TMP" tags="" position="750,550" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_The%20Melting%20Pot%20202627.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Cyber%20Community%20TS.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-cyb.pdf&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-tmp.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="proj_PUP" tags="" position="1125,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="proj_CUL" tags="" position="875,550" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Culturando!.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Power%20Up.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-pup.pdf&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-culturando.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="proj_PRO" tags="" position="1250,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="proj_CYB" tags="" position="1000,550" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Cyber%20Community%20TS.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Protagonisti%20noi%202.0.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-pro.pdf&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-cyber.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="proj_EIC" tags="" position="625,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="proj_PUP" tags="" position="1125,550" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Power%20Up.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Energie%20in%20circolo.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-eic.PDF&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-powerup.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="16" name="proj_GSR" tags="" position="500,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="proj_PRO" tags="" position="1250,550" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Protagonisti%20noi%202.0.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Giovani%20sinergie%20rinnovabili.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-gsr.PDF&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-protagonisti.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="17" name="proj_AIN" tags="" position="750,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="proj_EIC" tags="" position="625,675" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Energie%20in%20circolo.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Animare%20all&#39;incontro.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-ain.PDF&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-energie.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="18" name="proj_MAT" tags="" position="875,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="16" name="proj_GSR" tags="" position="500,675" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Giovani%20sinergie%20rinnovabili.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Maria%20al%20Tempio.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-mat.PDF&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-sinergie.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="19" name="proj_AMP" tags="" position="1000,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="17" name="proj_AIN" tags="" position="750,675" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Animare%20all&#39;incontro.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Amplifica.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-amp.pdf&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-animare.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="20" name="proj_CSG" tags="" position="1125,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="18" name="proj_MAT" tags="" position="875,675" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Maria%20al%20Tempio.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Consumi%20o%20scegli.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-csg.PDF&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-maria.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="21" name="proj_SPV" tags="" position="1250,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="19" name="proj_AMP" tags="" position="1000,675" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Amplifica.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Sport,%20palestra%20di%20Vita.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-spv.PDF&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-amplifica.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="22" name="proj_RIN" tags="" position="1375,675" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="20" name="proj_CSG" tags="" position="1125,675" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Consumi%20o%20scegli.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_RinnovaMenti.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-rin.PDF&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-consumi.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="23" name="proj_ALI" tags="" position="500,800" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
-  &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="21" name="proj_SPV" tags="" position="1250,675" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Sport,%20palestra%20di%20Vita.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
 
-  &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Ti%20regalo%20nuove%20ali.png&quot; class=&quot;projImage imageClean&quot;&gt;
-  &lt;div class=&quot;unlockFooter&quot;&gt;
-&lt;a class=&quot;btnDownload&quot;
-href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-ali.pdf&quot;
-target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-sport.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
     &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="22" name="proj_RIN" tags="" position="1375,675" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_RinnovaMenti.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-rinnovamenti.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
     &lt;div class=&quot;unlockActions&quot;&gt;
-      (link:&quot;Rifai il quiz&quot;)[(goto:&quot;Start&quot;)]
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="23" name="proj_ALI" tags="" position="500,800" size="100,100">&lt;div class=&quot;unlockBox-split&quot;&gt;
+  &lt;div class=&quot;left-col&quot;&gt;
+    &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
+    &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Ti%20regalo%20nuove%20ali.png&quot; class=&quot;projImage&quot;&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;right-col&quot;&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-ali.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    
+    &lt;div class=&quot;unlockActions&quot;&gt;
+      (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
+    &lt;/div&gt;
+
+    &lt;div class=&quot;scsLink&quot;&gt;
+      Scopri tutti i progetti su&lt;br&gt;
+      &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata></tw-storydata>
