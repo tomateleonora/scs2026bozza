@@ -11,510 +11,487 @@
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play SCS2026.</tw-noscript></noscript></tw-story>
 <tw-storydata name="SCS2026" startnode="1" creator="Twine" creator-version="2.11.1" format="Harlowe" format-version="3.3.9" ifid="53A09E96-1578-4CFC-8B54-A9260222E79E" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/* =========================================================
-   RESET / BASE
-   ========================================================= */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;            /* niente scroll pagina */
-  overscroll-behavior: none;   /* niente “rimbalzo” */
+:root{
+  --appH: 100svh;     /* settato dal JS (min visto) */
+  --ui-scale: 1;      /* settato dal JS (fit) */
+
+  --sky:#87CEEB;
+  --panel:#FFF4C7;
+  --ink:#2a2a2a;
+  --stroke:#2a2a2a;
+
+  --btn:#34d399;
+  --btnHover:#fbbf24;
+  --reward:#fbbf24;
+
+  --shadow: 10px 10px 0 var(--stroke);
+  --shadowSm: 6px 6px 0 var(--stroke);
 }
 
-*, *::before, *::after { box-sizing: border-box; }
-img, video, iframe { max-width: 100%; height: auto; }
+@supports not (height: 100svh){
+  :root{ --appH: 100vh; }
+}
 
-/* (Pixel vibe) */
-* { image-rendering: pixelated; }
+/* BASE */
+html, body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;               /* niente scroll pagina */
+  overscroll-behavior:none;
+  background: var(--sky);
+  font-family:"Press Start 2P", monospace;
+  color: var(--ink);
+}
 
-/* =========================================================
-   FIX BUCHI HARLOWE
-   ========================================================= */
-tw-passage p { margin: 0 !important; }
-tw-expression, tw-hook, tw-collapsed { margin: 0 !important; padding: 0 !important; }
-tw-passage p > br:only-child { display: none !important; }
+*, *::before, *::after{ box-sizing:border-box; }
+*{ image-rendering: pixelated; }
 
-/* =========================================================
-   STAGE A SCHERMO (il “display” del gioco)
-   - blocca tutto in 1 schermata
-   - centra il pannello
-   ========================================================= */
-tw-story {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;            /* niente scroll interno */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+img, video, iframe{
+  max-width:100%;
+  height:auto;
+  display:block;
+}
 
-  /* safe area per notch + un po’ di respiro */
+/* Harlowe: buchi */
+tw-passage p{ margin:0 !important; }
+tw-expression, tw-hook, tw-collapsed{ margin:0 !important; padding:0 !important; }
+tw-passage p > br:only-child{ display:none !important; }
+
+/* STAGE */
+tw-story{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height: var(--appH);
+  overflow:hidden;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
   padding:
     max(10px, env(safe-area-inset-top))
     max(10px, env(safe-area-inset-right))
     max(10px, env(safe-area-inset-bottom))
     max(10px, env(safe-area-inset-left));
 
-  font-family: "Press Start 2P", monospace;
-  background: #87CEEB;
-  color: #2a2a2a;
+  background: var(--sky);
 }
 
-/* Nuvole (overlay fisso) */
-tw-story::before{
-  content:"";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: .7;
-  background:
-    radial-gradient(circle at 12% 16%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px),
-    radial-gradient(circle at 16% 16%, rgba(255,255,255,.98) 0 24px, rgba(255,255,255,0) 25px),
-    radial-gradient(circle at 21% 16%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px),
-    radial-gradient(circle at 58% 22%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px),
-    radial-gradient(circle at 62% 22%, rgba(255,255,255,.98) 0 24px, rgba(255,255,255,0) 25px),
-    radial-gradient(circle at 67% 22%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px);
-}
+/* PANEL */
+tw-passage{
+  width: min(900px, 92vw);
+  max-height: calc(var(--appH) - 20px);
 
-/* =========================================================
-   PASSAGE = PANNELLO GIALLO (NON 100svh!)
-   - alto quanto contenuto
-   - ma non supera lo schermo
-   ========================================================= */
-tw-passage {
-  width: min(900px, 100%);
-  max-height: 100%;
-  margin: 0 !important;
-
-  background: #FFF4C7;
-  border: 5px solid #2a2a2a;
-  box-shadow: 10px 10px 0 #2a2a2a;
-  border-radius: 0;
+  background: var(--panel);
+  border: 5px solid var(--stroke);
+  box-shadow: var(--shadow);
 
   padding: clamp(10px, 2vw, 14px) !important;
-  overflow: hidden;                    /* niente scroll */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(6px, 1.4vh, 10px);
 
-  line-height: 1.45;
+  display:flex;
+  flex-direction:column;
+  gap: clamp(6px, 1.2vh, 10px);
+
+  line-height:1.45;
+  overflow:hidden !important;        /* IMPORTANT: no scroll dentro */
+  min-height:0;
+
+  transform: scale(var(--ui-scale));
+  transform-origin: center center;
+  will-change: transform;
 }
 
-/* Titoli compatti e responsive */
+/* testo sempre leggibile (mai bianco) */
+tw-passage,
+tw-passage p,
+tw-passage span,
+tw-passage h1,
+tw-passage h2,
+tw-passage h3{
+  color: var(--ink) !important;
+}
+
 tw-passage h1{
-  margin: 0 0 10px 0 !important;
+  margin:0 0 8px 0 !important;
   font-size: clamp(14px, 2.2vw, 16px);
 }
-
-/* Testo base un filo più elastico */
 tw-passage, tw-passage p, tw-passage span{
   font-size: clamp(11px, 1.9vw, 12px);
 }
 
-/* =========================================================
-   BOTTONI
-   ========================================================= */
+/* BOTTONI (tw-link) */
 tw-link{
-  display: block;
-  margin: clamp(6px, 1vh, 8px) 0;
-  padding: clamp(10px, 2vw, 12px) clamp(10px, 2vw, 12px);
+  display:block !important;
+  width:100% !important;
 
-  border: 4px solid #2a2a2a;
-  box-shadow: 6px 6px 0 #2a2a2a;
+  padding: 14px 12px !important;
+  margin: 6px 0 !important;
 
-  background: #2ECC71;
-  color: #1b1b1b;
-  text-decoration: none;
-  cursor: pointer;
+  border: 4px solid var(--stroke) !important;
+  box-shadow: var(--shadowSm) !important;
 
-  transition: transform 120ms ease, filter 120ms ease;
-  line-height: 1.2;
-  word-break: break-word;
+  background: var(--btn) !important;
+  color: #ffffff !important;
+
+  text-decoration:none !important;
+  cursor:pointer;
+
+  text-align:center !important;
+  line-height:1.25;
+
+  letter-spacing:.3px;
+  text-shadow:
+    1px 1px 0 rgba(0,0,0,.55),
+    0 0 2px rgba(0,0,0,.25);
+
+  white-space: normal !important;
+  overflow-wrap:anywhere !important;
+  word-break:break-word !important;
 }
-tw-link:hover{ background:#FF9F1C; transform: translateY(-2px); }
-tw-link:active{ transform: translateY(0); filter: brightness(.98); }
+tw-link:hover{ background: var(--btnHover) !important; }
+tw-link:active{
+  transform: translateY(1px);
+  box-shadow: 5px 5px 0 var(--stroke) !important;
+}
 
-/* =========================================================
-   RISULTATO / CARD
-   ========================================================= */
+/* NASCONDI SIDEBAR HARLOWE (ma resta cliccabile da JS) */
+tw-sidebar{
+  position: fixed !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* UNDO/REDO dentro al pannello */
+.pixelNav{
+  margin-top:auto;                 /* sempre in fondo */
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding-top: 10px;
+  border-top: 4px solid var(--stroke);
+}
+
+.pixelNav .pixelBtn{
+  flex: 1 1 0;
+  min-width: 0;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding: 12px 10px;
+
+  border: 4px solid var(--stroke);
+  box-shadow: var(--shadowSm);
+
+  background: #a7f3d0;
+  color:#1b1b1b;
+
+  cursor:pointer;
+  user-select:none;
+
+  font-family:"Press Start 2P", monospace;
+  font-size: 12px;
+  line-height: 1;
+}
+.pixelNav .pixelBtn:hover{ background:#fde68a; }
+.pixelNav .pixelBtn:active{
+  transform: translateY(1px);
+  box-shadow: 5px 5px 0 var(--stroke);
+}
+.pixelNav .pixelBtn[disabled]{
+  opacity: .45;
+  filter: grayscale(1);
+  cursor: not-allowed;
+  transform:none;
+}
+
+/* RISULTATO: immagini e box controllati (per non far esplodere l’altezza) */
 .unlockBox{
-  flex:1;
-  min-height:0;
-
   display:flex;
   flex-direction:column;
   align-items:center;
-
-  overflow:hidden;
-
-  padding:0;
-
-  background:transparent;
-  border:none;
-  box-shadow:none;
+  text-align:center;
+  gap:10px;
+  width:100%;
 }
 
 .unlockBadge{
-  display: inline-block;
-  align-self: flex-start;
-  background:#2ECC71;
-  color:#1b1b1b;
-  border:4px solid #2a2a2a;
-  box-shadow:6px 6px 0 #2a2a2a;
+  align-self:flex-start;
+  background: var(--btn);
+  color:#fff !important;
+
+  border:4px solid var(--stroke);
+  box-shadow: var(--shadowSm);
+
   padding:10px 12px;
   font-size: clamp(10px, 1.6vw, 11px);
+
+  text-shadow:
+    1px 1px 0 rgba(0,0,0,.55),
+    0 0 2px rgba(0,0,0,.25);
 }
 
-.unlockTitle{
-  margin-top: 10px;
-  font-size: clamp(16px, 3vw, 20px);
-  color: #FF8C00;
-}
-
-.unlockInfo{
-  margin-top: 10px;
-  font-size: clamp(11px, 1.9vw, 12px);
-  line-height: 1.45;
-}
-
-.unlockDivider{
-  margin: 12px 0 8px;
-  height: 0;
-  border-top: 4px dashed #2a2a2a;
-}
-
-.unlockFooter{
-  margin-top: 8px;
-  padding-top: 4px;
-}
-
-/* Immagine risultato: non deve mai obbligare a scroll */
 .projImage{
-  width:auto;
-  max-width:420px;
-  max-height:65svh;
-  margin:12px auto;
+  width: min(96%, 620px);
+  max-width: 96%;
+  max-height: clamp(160px, 34svh, 340px); /* IMPORTANT: limita altezza immagine */
+  height:auto;
+  object-fit: contain;
+}
+
+/* bottone PDF */
+a.btnDownload{
   display:block;
+  width:100%;
 
-  border:none;
-  box-shadow:none;
-  
-  max-height: min(42svh, 320px);
-  object-fit: contain;
-}
+  padding: 16px 12px;
+  margin: 8px 0 !important;
 
-/* Contatti compatti */
-.projContacts{
-  text-align: center;
-  font-size: clamp(11px, 1.9vw, 12px);
-  line-height: 1.4;
-  word-break: break-word;
-}
+  border: 5px solid var(--stroke);
+  box-shadow: var(--shadow);
 
-/* Link infoserviziocivile */
-.scsLink{
+  background: var(--reward);
+  color: #1b1b1b !important;
+
+  text-decoration:none;
+  cursor:pointer;
+
   text-align:center;
-  font-size:11px;
-  line-height:1.2;
-  margin-top:4px
+  line-height:1.25;
+
+  font-size: clamp(14px, 2.5vw, 16px);
+  letter-spacing:.3px;
 }
-.scsLink a{
-  color: #2a2a2a;
-  text-decoration: underline;
+a.btnDownload::before{ content:"⬇ "; }
+a.btnDownload:hover{ background:#f59e0b; }
+a.btnDownload:active{
+  transform: translateY(1px);
+  box-shadow: 8px 8px 0 var(--stroke);
 }
 
-/* =========================================================
-   MOBILE TUNING (extra)
-   ========================================================= */
+/* Mobile compatta un po' */
 @media (max-width: 600px){
   tw-passage{
-    border-width: 4px;
-    box-shadow: 6px 6px 0 #2a2a2a;
+    border-width:4px;
+    box-shadow: 6px 6px 0 var(--stroke);
+    gap:8px;
   }
   tw-link{
-    border-width: 3px;
-    box-shadow: 4px 4px 0 #2a2a2a;
+    padding: 12px 10px !important;
+    border-width:3px !important;
+    box-shadow: 4px 4px 0 var(--stroke) !important;
   }
-  .unlockBox{
-    border-width: 4px;
-    box-shadow: 6px 6px 0 #2a2a2a;
+  .pixelNav .pixelBtn{
+    padding: 11px 8px;
+    font-size: 11px;
   }
-.projImage{
-  width: auto;
-  max-width: min(85vw, 520px);
-  height: auto;
-  display: block;
-  margin: 10px auto;
-
-  border: none;
-  box-shadow: none;
-
-  max-height: 55svh;
-  object-fit: contain;
-}
-.imageClean{
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* =========================
-   RISULTATO: layout più “gioco”, meno vuoto
-   ========================= */
-.unlockBox{
-  /* meno spazio interno = tutto più grande */
-  padding: 10px 12px !important;
-
-  /* centra meglio i contenuti */
-  align-items: center;
-  text-align: center;
-
-  /* se vuoi un riquadro più “leggero”, puoi anche ridurre qui:
-     border-width: 4px; box-shadow: 6px 6px 0 #2a2a2a;
-  */
-}
-
-/* Badge resta in alto a sinistra (carino) */
-.unlockBadge{
-  align-self: flex-start;
-  margin-bottom: 8px;
-}
-
-/* Immagine: grande, senza cornice, senza ombra */
-.projImage,
-.projImage.imageClean{
-  width: min(92%, 560px) !important;     /* più grande */
-  max-width: 92% !important;
-  height: auto;
-
-  margin: 10px auto 6px !important;
-
-  border: none !important;
-  box-shadow: none !important;
-
-  /* la cosa importante per poster verticali: limitiamo l'altezza */
-  max-height: 60svh !important;
-  object-fit: contain;
-  display: block;
-}
-
-/* Footer: meno “aria” sotto */
-.unlockFooter{
-  margin-top: 6px !important;
-  padding-top: 0 !important;
-  width: 100%;
-}
-
-/* Link “Scopri tutti i progetti…” più compatto */
-.scsLink{
-  margin-top: 4px !important;
-  font-size: 11px !important;
-  line-height: 1.2 !important;
-}
-
-/* Pulsante “Rifai il quiz”: trasformo il link di Harlowe in bottone e tolgo spazi */
-.unlockActions{
-  margin-top: 8px !important;
-}
-.unlockActions tw-link{
-  display: inline-block !important;  /* non a tutta larghezza */
-  margin: 0 !important;
-}
-/* ===== OVERRIDE FORTE SCHERMATA RISULTATO ===== */
-
-/* 1) La cornice enorme che vedi è la unlockBox: alleggeriamola o togliamola */
-tw-story .unlockBox{
-  border: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
-
-  padding: 0 !important;
-  margin: 0 !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  text-align: center !important;
-  gap: 10px !important;
-}
-
-/* Se vuoi comunque un “fondino” leggero dietro il contenuto (opzionale):
-tw-story .unlockBox{
-  background: rgba(255,255,255,.9) !important;
-  border: 4px solid #2a2a2a !important;
-  box-shadow: 6px 6px 0 #2a2a2a !important;
-  padding: 10px 12px !important;
-}
-*/
-
-/* 2) Immagine: grande, centrata, senza bordo/ombra */
-tw-story .unlockBox img.projImage{
-  width: min(96%, 620px) !important;
-  max-width: 96% !important;
-  height: auto !important;
-
-  border: 0 !important;
-  box-shadow: none !important;
-
-  max-height: 62svh !important;     /* aumenta qui se la vuoi ancora più grande */
-  object-fit: contain !important;
-
-  margin: 0 auto !important;
-  display: block !important;
-}
-
-/* 3) Footer compatto */
-tw-story .unlockFooter{
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-}
-
-/* 4) Testo “Scopri tutti i progetti…” più stretto */
-tw-story .scsLink{
-  margin-top: 2px !important;
-  font-size: 11px !important;
-  line-height: 1.15 !important;
-}
-
-/* 5) Bottone “Rifai il quiz” NON a tutta larghezza */
-tw-story .unlockActions tw-link{
-  display: inline-block !important;
-  width: auto !important;
-  margin-top: 6px !important;
-}
-
-/* ===== SCHERMATA RISULTATO: niente pannello gigante ===== */
-
-tw-story .unlockBox{
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  align-items: center;
-}
-
-/* poster molto più grande */
-tw-story .unlockBox img{
-  max-height: 70svh !important;
-  width: auto !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* spazio sotto molto ridotto */
-tw-story .unlockFooter{
-  margin-top: 4px !important;
-}
-
-/* bottone più compatto */
-tw-story .unlockActions tw-link{
-  width: auto !important;
-  display: inline-block !important;
-}
-/* =========================
-   VIEWPORT MOBILE: usa dvh (più stabile su Safari/Chrome mobile)
-   ========================= */
-html, body {
-  height: 100%;
-}
-
-tw-story{
-  height: 100dvh;   /* invece di 100% */
-}
-
-/* =========================
-   PASSAGE: lo scalano il JS -> NON deve tagliare
-   ========================= */
-tw-passage{
-  /* togliamo il “taglio” interno: ci pensa lo scaling */
-  max-height: none !important;
-  overflow: visible !important;
-
-  /* scala controllata da variabile */
-  transform: scale(var(--ui-scale, 1));
-  transform-origin: center center;
-  will-change: transform;
-
-  /* su mobile meglio un po’ meno largo */
-  width: min(900px, 92vw) !important;
-}
-
-/* =========================
-   BOTTONI: niente “stretti poi larghi” + testo sempre a capo
-   ========================= */
-tw-link{
-  display: block !important;
-  width: 100% !important;          /* sempre pieni */
-  white-space: normal !important;  /* permette a capo */
-  overflow-wrap: anywhere !important;
-  word-break: break-word !important;
-  line-height: 1.25 !important;
-  margin: clamp(6px, 1vh, 8px) 0 !important;
-}
-
-/* Se una domanda è lunga, riduciamo un filo il padding su mobile */
-@media (max-width: 600px){
-  tw-link{
-    padding: 10px 10px !important;
-    font-size: clamp(10px, 3.3vw, 12px) !important;
-  }
-
-  tw-passage{
-    gap: 8px !important;
-  }
-
-  tw-passage h1{
-    margin-bottom: 8px !important;
+  a.btnDownload{
+    padding: 14px 10px;
+    border-width:4px;
+    box-shadow: 6px 6px 0 var(--stroke);
   }
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">(() => {
-  const PAD = 10; // “respiro” dai bordi (px)
+  const root = document.documentElement;
+
+  const PAD = 20;          // respiro totale
+  const MIN_SCALE = 0.62;  // sotto diventa troppo piccolo
+
+  let lockedH = null;
+  let running = false;
+
+  function viewport() {
+    const vv = window.visualViewport;
+    return {
+      w: Math.round(vv ? vv.width : window.innerWidth),
+      h: Math.round(vv ? vv.height : window.innerHeight)
+    };
+  }
+
+  function applyLockedHeight() {
+    const { h } = viewport();
+    if (lockedH === null) lockedH = h;
+    lockedH = Math.min(lockedH, h);     // mai crescere
+    root.style.setProperty("--appH", lockedH + "px");
+  }
+
+  async function waitFonts() {
+    if (document.fonts && document.fonts.ready) {
+      try { await document.fonts.ready; } catch(e) {}
+    }
+  }
 
   function getPassage() {
-    const story = document.querySelector("tw-story");
-    if (!story) return null;
-    return story.querySelector("tw-passage");
+    return document.querySelector("tw-passage");
   }
 
-  function fitPassageToScreen() {
-    const passage = getPassage();
-    if (!passage) return;
+  function waitImages(scope) {
+    const imgs = Array.from(scope.querySelectorAll("img"));
+    if (!imgs.length) return Promise.resolve();
 
-    // reset per misurare in scala 1
-    passage.style.setProperty("--ui-scale", 1);
-    passage.style.transform = "scale(1)";
-
-    // misura reale
-    const rect = passage.getBoundingClientRect();
-
-    // viewport (dvh gestito dal browser; innerHeight è ok per il calcolo pratico)
-    const availW = Math.max(100, window.innerWidth - PAD * 2);
-    const availH = Math.max(100, window.innerHeight - PAD * 2);
-
-    // scala per stare dentro sia in larghezza che in altezza
-    const scale = Math.min(1, availW / rect.width, availH / rect.height);
-
-    passage.style.setProperty("--ui-scale", scale.toFixed(4));
-    passage.style.transform = `scale(${scale.toFixed(4)})`;
+    return Promise.all(imgs.map(img => {
+      if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+      return new Promise(res => {
+        img.addEventListener("load", res, { once:true });
+        img.addEventListener("error", res, { once:true });
+      });
+    }));
   }
 
-  // Ricalcola quando cambia orientamento/viewport
-  window.addEventListener("resize", () => requestAnimationFrame(fitPassageToScreen));
-  window.addEventListener("orientationchange", () => setTimeout(fitPassageToScreen, 80));
+  // --- trova icone undo/redo della sidebar Harlowe
+  function getSidebarIcons() {
+    const sidebar = document.querySelector("tw-sidebar");
+    if (!sidebar) return { undo: null, redo: null };
 
-  // Ricalcola quando cambia passage (Harlowe “ridisegna” il DOM)
-  const story = document.querySelector("tw-story");
-  if (story) {
-    const mo = new MutationObserver(() => requestAnimationFrame(fitPassageToScreen));
-    mo.observe(story, { childList: true, subtree: true });
+    const icons = Array.from(sidebar.querySelectorAll("tw-icon"));
+    if (!icons.length) return { undo: null, redo: null };
+
+    const norm = s => (s || "").toLowerCase();
+    const byLabel = (needle) =>
+      icons.find(i => {
+        const t = norm(i.getAttribute("title"));
+        const a = norm(i.getAttribute("aria-label"));
+        return t.includes(needle) || a.includes(needle);
+      });
+
+    let undo = byLabel("undo") || byLabel("indiet") || byLabel("back");
+    let redo = byLabel("redo") || byLabel("avanti") || byLabel("forward");
+
+    // fallback: spesso sono i primi due
+    if (!undo && icons[0]) undo = icons[0];
+    if (!redo && icons[1]) redo = icons[1];
+
+    return { undo, redo };
   }
 
-  // Primo fit
-  document.addEventListener("DOMContentLoaded", fitPassageToScreen);
-  setTimeout(fitPassageToScreen, 0);
-})();
-</script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
+  function isDisabled(el) {
+    if (!el) return true;
+    if (el.hasAttribute("disabled")) return true;
+    if ((el.getAttribute("aria-disabled") || "").toLowerCase() === "true") return true;
+    if ((el.className || "").toString().toLowerCase().includes("disabled")) return true;
+    return false;
+  }
+
+  // --- UNDO/REDO nel pannello
+  function ensurePixelNav(p) {
+    if (!p) return;
+
+    let nav = p.querySelector(".pixelNav");
+    if (!nav) {
+      nav = document.createElement("div");
+      nav.className = "pixelNav";
+
+      const bU = document.createElement("button");
+      bU.type = "button";
+      bU.className = "pixelBtn pixelUndo";
+      bU.textContent = "⟵ UNDO";
+
+      const bR = document.createElement("button");
+      bR.type = "button";
+      bR.className = "pixelBtn pixelRedo";
+      bR.textContent = "REDO ⟶";
+
+      nav.appendChild(bU);
+      nav.appendChild(bR);
+      p.appendChild(nav);
+
+      bU.addEventListener("click", () => {
+        const { undo } = getSidebarIcons();
+        if (undo && !isDisabled(undo)) undo.click();
+      });
+
+      bR.addEventListener("click", () => {
+        const { redo } = getSidebarIcons();
+        if (redo && !isDisabled(redo)) redo.click();
+      });
+    }
+
+    const { undo, redo } = getSidebarIcons();
+    const bU = nav.querySelector(".pixelUndo");
+    const bR = nav.querySelector(".pixelRedo");
+    if (bU) bU.disabled = isDisabled(undo);
+    if (bR) bR.disabled = isDisabled(redo);
+  }
+
+  // --- FIT: scala in base al contenuto reale (scrollHeight) + larghezza
+  function fitPassageByContent(p) {
+    root.style.setProperty("--ui-scale", "1");
+
+    const { w } = viewport();
+    const availW = Math.max(160, w - PAD);
+    const availH = Math.max(160, lockedH - PAD);
+
+    // misure a scale=1
+    const rect = p.getBoundingClientRect();
+    if (rect.width < 10) return;
+
+    // altezza vera del contenuto (anche quello che verrebbe tagliato)
+    const contentH = Math.max(p.scrollHeight, rect.height);
+
+    const scaleW = availW / rect.width;
+    const scaleH = availH / contentH;
+
+    let scale = Math.min(1, scaleW, scaleH);
+    scale = Math.max(MIN_SCALE, scale);
+
+    root.style.setProperty("--ui-scale", String(scale));
+  }
+
+  async function stabilize() {
+    if (running) return;
+    running = true;
+
+    applyLockedHeight();
+    await waitFonts();
+
+    requestAnimationFrame(async () => {
+      applyLockedHeight();
+      const p = getPassage();
+      if (!p) { running = false; return; }
+
+      // 1) UNDO/REDO prima (incide sulle misure)
+      ensurePixelNav(p);
+
+      // 2) aspetta immagini (fondamentale per Risultato)
+      await waitImages(p);
+
+      // 3) doppio frame per layout stabile
+      requestAnimationFrame(() => {
+        applyLockedHeight();
+        fitPassageByContent(p);
+        running = false;
+      });
+    });
+  }
+
+  // init
+  stabilize();
+
+  // viewport changes
+  const vv = window.visualViewport;
+  const onResizeLike = () => stabilize();
+
+  if (vv) {
+    vv.addEventListener("resize", onResizeLike, { passive:true });
+    vv.addEventListener("scroll", onResizeLike, { passive:true });
+  }
+  window.addEventListener("resize", onResizeLike, { passive:true });
+
+  // rotation: reset lock
+  window.addEventListener("orientationchange", () => {
+    lockedH = null;
+    setTimeout(stabilize, 160);
+  }, { passive:true });
+
+  // change passage (Harlowe)
+  const story = document.querySelector("tw-story") || document.body;
+  new MutationObserver(() => stabilize()).observe(story, { childList:true, subtree:true });
+})();</script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
 (link: &quot;Inizia&quot;)[
 (set: $provincia to &quot;&quot;)
 (set: $a2 to &quot;&quot;)(set: $a3 to &quot;&quot;)(set: $a4 to &quot;&quot;)(set: $a5 to &quot;&quot;)
@@ -553,6 +530,7 @@ tw-link{
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Scacco,%20rimbalzo%20e%20inclusione.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;div class=&quot;unlockActions&quot;&gt; &lt;!-- ✅ BOTTONE PDF --&gt; &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/pdf/scheda-sri.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda &lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -563,10 +541,11 @@ tw-link{
   &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="9" name="proj_MSM" tags="" position="625,550" size="100,100">&lt;div class=&quot;unlockBox&quot;&gt;
   &lt;div class=&quot;unlockBadge&quot;&gt;PROGETTO SBLOCCATO&lt;/div&gt;
-
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Melara%20si%20muove.png&quot; class=&quot;projImage imageClean&quot;&gt;
-
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-msm.PDF&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -580,6 +559,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_The%20Melting%20Pot%20202627.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-tmp.pdf&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -593,6 +575,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Culturando!.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-cul.pdf&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -606,6 +591,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Cyber%20Community%20TS.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-cyb.pdf&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -619,6 +607,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Power%20Up.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-pup.pdf&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -632,6 +623,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Protagonisti%20noi%202.0.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-pro.pdf&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -645,6 +639,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Energie%20in%20circolo.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-eic.PDF&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -658,6 +655,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Giovani%20sinergie%20rinnovabili.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-gsr.PDF&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -671,6 +671,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Animare%20all&#39;incontro.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-ain.PDF&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -684,6 +687,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Maria%20al%20Tempio.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-mat.PDF&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -697,6 +703,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Amplifica.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-amp.pdf&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -710,6 +719,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Consumi%20o%20scegli.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-csg.PDF&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -723,6 +735,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Sport,%20palestra%20di%20Vita.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-spv.PDF&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -736,6 +751,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_RinnovaMenti.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-rin.PDF&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
@@ -749,6 +767,9 @@ tw-link{
 
   &lt;img src=&quot;https://raw.githubusercontent.com/tomateleonora/scs2026bozza/main/STILL_Ti%20regalo%20nuove%20ali.png&quot; class=&quot;projImage imageClean&quot;&gt;
   &lt;div class=&quot;unlockFooter&quot;&gt;
+&lt;a class=&quot;btnDownload&quot;
+href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-ali.pdf&quot;
+target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Scarica la scheda&lt;/a&gt;
     &lt;div class=&quot;scsLink&quot;&gt;
       Scopri tutti i progetti su&lt;br&gt;
       &lt;a href=&quot;https://infoserviziocivile.it&quot; target=&quot;_blank&quot;&gt;infoserviziocivile.it&lt;/a&gt;
