@@ -9,488 +9,315 @@
 </head>
 <body>
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play SCS2026.</tw-noscript></noscript></tw-story>
-<tw-storydata name="SCS2026" startnode="1" creator="Twine" creator-version="2.11.1" format="Harlowe" format-version="3.3.9" ifid="53A09E96-1578-4CFC-8B54-A9260222E79E" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+<tw-storydata name="SCS2026" startnode="1" creator="Twine" creator-version="2.11.1" format="Harlowe" format-version="3.3.9" ifid="53A09E96-1578-4CFC-8B54-A9260222E79E" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P:wght@400;700&display=swap');
 
-:root{
-  --appH: 100svh;     /* settato dal JS (min visto) */
-  --ui-scale: 1;      /* settato dal JS (fit) */
-
-  --sky:#87CEEB;
-  --panel:#FFF4C7;
-  --ink:#2a2a2a;
-  --stroke:#2a2a2a;
-
-  --btn:#34d399;
-  --btnHover:#fbbf24;
-  --reward:#fbbf24;
-
-  --shadow: 10px 10px 0 var(--stroke);
-  --shadowSm: 6px 6px 0 var(--stroke);
+:root {
+  --appH: 100svh;
+  --ui-scale: 1;
+  
+  /* COLORI GIOCO */
+  --sky: #87CEEB; /* Azzurro Cielo */
+  --panel: #FFF4C7; /* Crema Pannello */
+  --ink: #2a2a2a; /* Nero Testo */
+  --stroke: #2a2a2a; /* Nero Bordo */
+  --btn: #34d399; /* Verde Bottoni Scelte */
+  --reward: #FFD700; /* Giallo Oro Bottone Scarica */
+  
+  --pad: 16px;
+  --gap: 12px;
+  --btnPadY: 12px;
+  --btnPadX: 10px;
+  --titleSize: clamp(16px, 2.5vw, 20px);
+  --imgMaxH: clamp(180px, 35svh, 350px);
 }
 
-@supports not (height: 100svh){
-  :root{ --appH: 100vh; }
+html.compact {
+  --pad: 10px;
+  --gap: 8px;
+  --imgMaxH: 30svh;
 }
 
-/* BASE */
-html, body{
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;               /* niente scroll pagina */
-  overscroll-behavior:none;
+html.superCompact {
+  --pad: 6px;
+  --gap: 4px;
+  --imgMaxH: 25svh;
+  --titleSize: 14px;
+}
+
+@supports not (height: 100svh) { :root { --appH: 100vh; } }
+
+html, body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
   background: var(--sky);
-  font-family:"Press Start 2P", monospace;
-  color: var(--ink);
+  font-family: "Press Start 2P", monospace;
+  
+  /* Image-rendering per effetto pixelato universale */
+  image-rendering: pixelated; 
 }
 
-*, *::before, *::after{ box-sizing:border-box; }
-*{ image-rendering: pixelated; }
+*, *::before, *::after { box-sizing: border-box; }
 
-img, video, iframe{
-  max-width:100%;
-  height:auto;
-  display:block;
+/* RESET TESTO HARLOWE: Tutto Nero su sfondo Crema */
+tw-story, tw-passage, tw-passage *, tw-expression, tw-hook, p, span {
+  color: #000 !important;
+  text-shadow: none !important;
 }
 
-/* Harlowe: buchi */
-tw-passage p{ margin:0 !important; }
-tw-expression, tw-hook, tw-collapsed{ margin:0 !important; padding:0 !important; }
-tw-passage p > br:only-child{ display:none !important; }
-
-/* STAGE */
-tw-story{
-  position:fixed;
-  inset:0;
-  width:100vw;
-  height: var(--appH);
-  overflow:hidden;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  padding:
-    max(10px, env(safe-area-inset-top))
-    max(10px, env(safe-area-inset-right))
-    max(10px, env(safe-area-inset-bottom))
-    max(10px, env(safe-area-inset-left));
-
+tw-story {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 15px;
   background: var(--sky);
+  
+  /* Isolation per gestire correttamente i livelli (z-index) */
+  isolation: isolate; 
 }
 
-/* PANEL */
-tw-passage{
-  width: min(900px, 92vw);
-  max-height: calc(var(--appH) - 20px);
+/* =========================================
+   NUVOLE PIXEL-ART NELLO SFONDO
+   ========================================= */
+tw-story::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* Le nuvole non bloccano i clic */
+  opacity: 0.7; /* Leggermente trasparenti */
+  z-index: -1; /* Posizionate DIETRO il pannello di gioco */
+  
+  /* Grafica delle nuvole generata con gradienti radiali */
+  background:
+    radial-gradient(circle at 12% 16%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px),
+    radial-gradient(circle at 16% 16%, rgba(255,255,255,.98) 0 24px, rgba(255,255,255,0) 25px),
+    radial-gradient(circle at 21% 16%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px),
+    radial-gradient(circle at 58% 22%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px),
+    radial-gradient(circle at 62% 22%, rgba(255,255,255,.98) 0 24px, rgba(255,255,255,0) 25px),
+    radial-gradient(circle at 67% 22%, rgba(255,255,255,.98) 0 18px, rgba(255,255,255,0) 19px);
+}
 
+/* PANNELLO DI GIOCO */
+tw-passage {
+  width: min(900px, 94vw);
+  max-height: calc(var(--appH) - 30px) !important;
   background: var(--panel);
-  border: 5px solid var(--stroke);
-  box-shadow: var(--shadow);
-
-  padding: clamp(10px, 2vw, 14px) !important;
-
-  display:flex;
-  flex-direction:column;
-  gap: clamp(6px, 1.2vh, 10px);
-
-  line-height:1.45;
-  overflow:hidden !important;        /* IMPORTANT: no scroll dentro */
-  min-height:0;
-
+  border: 4px solid var(--stroke);
+  box-shadow: 8px 8px 0 var(--stroke);
+  padding: var(--pad) !important;
+  display: flex; flex-direction: column;
+  gap: var(--gap);
+  overflow: hidden !important; 
   transform: scale(var(--ui-scale));
   transform-origin: center center;
-  will-change: transform;
+  
+  /* Invisibile all'inizio per evitare il salto visivo durante il calcolo */
+  opacity: 0; 
+  visibility: hidden;
+  transition: opacity 0.1s ease-in;
+  
+  /* Assicura che il pannello stia sopra le nuvole */
+  z-index: 1; 
 }
 
-/* testo sempre leggibile (mai bianco) */
-tw-passage,
-tw-passage p,
-tw-passage span,
-tw-passage h1,
-tw-passage h2,
-tw-passage h3{
-  color: var(--ink) !important;
+tw-passage.is-ready {
+  opacity: 1; 
+  visibility: visible;
 }
 
-tw-passage h1{
-  margin:0 0 8px 0 !important;
-  font-size: clamp(14px, 2.2vw, 16px);
+/* TITOLI (Neri e Grassetto) */
+tw-passage > p:first-of-type, h1, h2 {
+  color: #000 !important;
+  font-weight: 700 !important;
+  font-size: var(--titleSize) !important;
+  line-height: 1.4 !important;
+  margin-bottom: 5px !important;
+  display: block;
 }
-tw-passage, tw-passage p, tw-passage span{
-  font-size: clamp(11px, 1.9vw, 12px);
-}
 
-/* BOTTONI (tw-link) */
-tw-link{
-  display:block !important;
-  width:100% !important;
-
-  padding: 14px 12px !important;
-  margin: 6px 0 !important;
-
-  border: 4px solid var(--stroke) !important;
-  box-shadow: var(--shadowSm) !important;
-
+/* BOTTONI NORMALI (Verdi per le scelte) */
+tw-link {
+  display: block !important;
+  padding: var(--btnPadY) var(--btnPadX) !important;
+  border: 3px solid var(--stroke) !important;
+  box-shadow: 4px 4px 0 var(--stroke) !important;
   background: var(--btn) !important;
-  color: #ffffff !important;
-
-  text-decoration:none !important;
-  cursor:pointer;
-
-  text-align:center !important;
-  line-height:1.25;
-
-  letter-spacing:.3px;
-  text-shadow:
-    1px 1px 0 rgba(0,0,0,.55),
-    0 0 2px rgba(0,0,0,.25);
-
-  white-space: normal !important;
-  overflow-wrap:anywhere !important;
-  word-break:break-word !important;
-}
-tw-link:hover{ background: var(--btnHover) !important; }
-tw-link:active{
-  transform: translateY(1px);
-  box-shadow: 5px 5px 0 var(--stroke) !important;
+  color: #fff !important; /* Testo bianco sui bottoni verdi */
+  text-align: center !important;
+  text-decoration: none !important;
+  font-size: 10px;
+  margin: 4px 0 !important;
 }
 
-/* NASCONDI SIDEBAR HARLOWE (ma resta cliccabile da JS) */
-tw-sidebar{
-  position: fixed !important;
-  left: -9999px !important;
-  top: -9999px !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+/* BOX RISULTATO (Pagina finale centrata) */
+.unlockBox {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  justify-content: center;
+  gap: 8px; width: 100%;
 }
 
-/* UNDO/REDO dentro al pannello */
-.pixelNav{
-  margin-top:auto;                 /* sempre in fondo */
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding-top: 10px;
-  border-top: 4px solid var(--stroke);
+.unlockBadge {
+  background: var(--stroke); color: #fff !important;
+  padding: 4px 8px; font-size: 10px; margin-bottom: 5px;
 }
 
-.pixelNav .pixelBtn{
-  flex: 1 1 0;
-  min-width: 0;
-
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-
-  padding: 12px 10px;
-
-  border: 4px solid var(--stroke);
-  box-shadow: var(--shadowSm);
-
-  background: #a7f3d0;
-  color:#1b1b1b;
-
-  cursor:pointer;
-  user-select:none;
-
-  font-family:"Press Start 2P", monospace;
-  font-size: 12px;
-  line-height: 1;
-}
-.pixelNav .pixelBtn:hover{ background:#fde68a; }
-.pixelNav .pixelBtn:active{
-  transform: translateY(1px);
-  box-shadow: 5px 5px 0 var(--stroke);
-}
-.pixelNav .pixelBtn[disabled]{
-  opacity: .45;
-  filter: grayscale(1);
-  cursor: not-allowed;
-  transform:none;
-}
-
-/* RISULTATO: immagini e box controllati (per non far esplodere l’altezza) */
-.unlockBox{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  gap:10px;
-  width:100%;
-}
-
-.unlockBadge{
-  align-self:flex-start;
-  background: var(--btn);
-  color:#fff !important;
-
-  border:4px solid var(--stroke);
-  box-shadow: var(--shadowSm);
-
-  padding:10px 12px;
-  font-size: clamp(10px, 1.6vw, 11px);
-
-  text-shadow:
-    1px 1px 0 rgba(0,0,0,.55),
-    0 0 2px rgba(0,0,0,.25);
-}
-
-.projImage{
-  width: min(96%, 620px);
-  max-width: 96%;
-  max-height: clamp(160px, 34svh, 340px); /* IMPORTANT: limita altezza immagine */
-  height:auto;
+.projImage {
+  width: auto; max-width: 100%;
+  max-height: var(--imgMaxH);
   object-fit: contain;
+  flex-shrink: 1; /* Rimpicciolisce l'immagine per far spazio agli altri elementi */
+  margin: 0 auto;
 }
 
-/* bottone PDF */
-a.btnDownload{
-  display:block;
-  width:100%;
-
-  padding: 16px 12px;
-  margin: 8px 0 !important;
-
-  border: 5px solid var(--stroke);
-  box-shadow: var(--shadow);
-
-  background: var(--reward);
-  color: #1b1b1b !important;
-
-  text-decoration:none;
-  cursor:pointer;
-
-  text-align:center;
-  line-height:1.25;
-
-  font-size: clamp(14px, 2.5vw, 16px);
-  letter-spacing:.3px;
-}
-a.btnDownload::before{ content:"⬇ "; }
-a.btnDownload:hover{ background:#f59e0b; }
-a.btnDownload:active{
-  transform: translateY(1px);
-  box-shadow: 8px 8px 0 var(--stroke);
+/* BOTTONE ORO (Scarica) */
+a.btnDownload {
+  display: block; width: 100%;
+  padding: 14px; background: var(--reward) !important;
+  color: #000 !important; /* Scritta nera */
+  font-weight: 700 !important; /* Grassetto */
+  border: 4px solid var(--stroke);
+  box-shadow: 4px 4px 0 var(--stroke);
+  text-decoration: none; font-size: 12px;
+  margin: 8px 0;
 }
 
-/* Mobile compatta un po' */
-@media (max-width: 600px){
-  tw-passage{
-    border-width:4px;
-    box-shadow: 6px 6px 0 var(--stroke);
-    gap:8px;
-  }
-  tw-link{
-    padding: 12px 10px !important;
-    border-width:3px !important;
-    box-shadow: 4px 4px 0 var(--stroke) !important;
-  }
-  .pixelNav .pixelBtn{
-    padding: 11px 8px;
-    font-size: 11px;
-  }
-  a.btnDownload{
-    padding: 14px 10px;
-    border-width:4px;
-    box-shadow: 6px 6px 0 var(--stroke);
-  }
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">(() => {
+/* FOOTER RISULTATO */
+.scsLink { font-size: 9px; margin: 5px 0; line-height: 1.4; }
+.scsLink a { color: #000 !important; text-decoration: underline; }
+
+/* BOTTONE RIFAI IL QUIZ */
+.unlockActions tw-link {
+  background: #ff7e5f !important; /* Colore diverso per distinzione */
+  color: #fff !important;
+  font-size: 9px;
+  margin-top: 10px !important;
+}
+
+/* NAVIGAZIONE SOTTO (Indietro/Avanti generici) */
+.pixelNav {
+  margin-top: auto; display: flex; gap: 8px;
+  padding-top: 8px; border-top: 2px solid var(--stroke);
+  flex-shrink: 0;
+}
+.pixelBtn {
+  flex: 1; padding: 8px; font-family: inherit; font-size: 8px;
+  background: #eee; border: 2px solid #2a2a2a; cursor: pointer;
+}
+
+tw-sidebar { display: none; }
+</style><script role="script" id="twine-user-script" type="text/twine-javascript">(() => {
   const root = document.documentElement;
-
-  const PAD = 20;          // respiro totale
-  const MIN_SCALE = 0.62;  // sotto diventa troppo piccolo
-
-  let lockedH = null;
   let running = false;
+  
+  // Scala minima per mantenere la leggibilità su schermi molto piccoli
+  const MIN_SCALE_LIMIT = 0.4;
 
-  function viewport() {
+  function viewportH() {
     const vv = window.visualViewport;
-    return {
-      w: Math.round(vv ? vv.width : window.innerWidth),
-      h: Math.round(vv ? vv.height : window.innerHeight)
-    };
+    return Math.round(vv ? vv.height : window.innerHeight);
   }
 
   function applyLockedHeight() {
-    const { h } = viewport();
-    if (lockedH === null) lockedH = h;
-    lockedH = Math.min(lockedH, h);     // mai crescere
-    root.style.setProperty("--appH", lockedH + "px");
+    root.style.setProperty("--appH", viewportH() + "px");
   }
 
-  async function waitFonts() {
-    if (document.fonts && document.fonts.ready) {
-      try { await document.fonts.ready; } catch(e) {}
-    }
-  }
+  function getPassage() { return document.querySelector("tw-passage"); }
 
-  function getPassage() {
-    return document.querySelector("tw-passage");
-  }
-
-  function waitImages(scope) {
-    const imgs = Array.from(scope.querySelectorAll("img"));
-    if (!imgs.length) return Promise.resolve();
-
-    return Promise.all(imgs.map(img => {
-      if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-      return new Promise(res => {
-        img.addEventListener("load", res, { once:true });
-        img.addEventListener("error", res, { once:true });
-      });
-    }));
-  }
-
-  // --- trova icone undo/redo della sidebar Harlowe
-  function getSidebarIcons() {
-    const sidebar = document.querySelector("tw-sidebar");
-    if (!sidebar) return { undo: null, redo: null };
-
-    const icons = Array.from(sidebar.querySelectorAll("tw-icon"));
-    if (!icons.length) return { undo: null, redo: null };
-
-    const norm = s => (s || "").toLowerCase();
-    const byLabel = (needle) =>
-      icons.find(i => {
-        const t = norm(i.getAttribute("title"));
-        const a = norm(i.getAttribute("aria-label"));
-        return t.includes(needle) || a.includes(needle);
-      });
-
-    let undo = byLabel("undo") || byLabel("indiet") || byLabel("back");
-    let redo = byLabel("redo") || byLabel("avanti") || byLabel("forward");
-
-    // fallback: spesso sono i primi due
-    if (!undo && icons[0]) undo = icons[0];
-    if (!redo && icons[1]) redo = icons[1];
-
-    return { undo, redo };
-  }
-
-  function isDisabled(el) {
-    if (!el) return true;
-    if (el.hasAttribute("disabled")) return true;
-    if ((el.getAttribute("aria-disabled") || "").toLowerCase() === "true") return true;
-    if ((el.className || "").toString().toLowerCase().includes("disabled")) return true;
-    return false;
-  }
-
-  // --- UNDO/REDO nel pannello
+  // Aggiunge la navigazione se non è una pagina di risultato
   function ensurePixelNav(p) {
-    if (!p) return;
-
-    let nav = p.querySelector(".pixelNav");
-    if (!nav) {
-      nav = document.createElement("div");
-      nav.className = "pixelNav";
-
-      const bU = document.createElement("button");
-      bU.type = "button";
-      bU.className = "pixelBtn pixelUndo";
-      bU.textContent = "⟵ UNDO";
-
-      const bR = document.createElement("button");
-      bR.type = "button";
-      bR.className = "pixelBtn pixelRedo";
-      bR.textContent = "REDO ⟶";
-
-      nav.appendChild(bU);
-      nav.appendChild(bR);
-      p.appendChild(nav);
-
-      bU.addEventListener("click", () => {
-        const { undo } = getSidebarIcons();
-        if (undo && !isDisabled(undo)) undo.click();
-      });
-
-      bR.addEventListener("click", () => {
-        const { redo } = getSidebarIcons();
-        if (redo && !isDisabled(redo)) redo.click();
-      });
-    }
-
-    const { undo, redo } = getSidebarIcons();
-    const bU = nav.querySelector(".pixelUndo");
-    const bR = nav.querySelector(".pixelRedo");
-    if (bU) bU.disabled = isDisabled(undo);
-    if (bR) bR.disabled = isDisabled(redo);
+    if (!p || p.querySelector(".pixelNav") || p.querySelector(".unlockBox")) return;
+    const nav = document.createElement("div");
+    nav.className = "pixelNav";
+    nav.innerHTML = `
+      <button class="pixelBtn" id="u-btn">⟵ INDIETRO</button>
+      <button class="pixelBtn" id="r-btn">AVANTI ⟶</button>
+    `;
+    p.appendChild(nav);
+    
+    // Assicurati che gli ID degli elementi di navigazione di Harlowe siano corretti se necessario
+    nav.querySelector("#u-btn").onclick = () => Engine.backward();
+    nav.querySelector("#r-btn").onclick = () => Engine.forward();
   }
 
-  // --- FIT: scala in base al contenuto reale (scrollHeight) + larghezza
-  function fitPassageByContent(p) {
+  function computeScale(p) {
+    // Reset temporaneo della scala per misurare le dimensioni reali
     root.style.setProperty("--ui-scale", "1");
+    
+    const story = document.querySelector("tw-story");
+    const sRect = story.getBoundingClientRect();
+    
+    // Area disponibile con margini di sicurezza
+    const availW = sRect.width - 30;
+    const availH = sRect.height - 30;
 
-    const { w } = viewport();
-    const availW = Math.max(160, w - PAD);
-    const availH = Math.max(160, lockedH - PAD);
+    // Dimensioni reali del contenuto
+    const contentH = p.scrollHeight;
+    const contentW = p.offsetWidth;
 
-    // misure a scale=1
-    const rect = p.getBoundingClientRect();
-    if (rect.width < 10) return;
-
-    // altezza vera del contenuto (anche quello che verrebbe tagliato)
-    const contentH = Math.max(p.scrollHeight, rect.height);
-
-    const scaleW = availW / rect.width;
-    const scaleH = availH / contentH;
-
-    let scale = Math.min(1, scaleW, scaleH);
-    scale = Math.max(MIN_SCALE, scale);
-
-    root.style.setProperty("--ui-scale", String(scale));
+    // Calcola la scala necessaria per far entrare tutto nell'area disponibile
+    return Math.min(1, availW / contentW, availH / contentH);
   }
 
-  async function stabilize() {
+  async function fitEverything() {
     if (running) return;
     running = true;
 
     applyLockedHeight();
-    await waitFonts();
+    const p = getPassage();
+    if (!p) { running = false; return; }
 
-    requestAnimationFrame(async () => {
-      applyLockedHeight();
-      const p = getPassage();
-      if (!p) { running = false; return; }
+    // Rimuove la visibilità mentre calcola la scala per evitare il salto
+    p.classList.remove("is-ready");
 
-      // 1) UNDO/REDO prima (incide sulle misure)
-      ensurePixelNav(p);
+    ensurePixelNav(p);
 
-      // 2) aspetta immagini (fondamentale per Risultato)
-      await waitImages(p);
+    // Ciclo di riduzione: prova le modalità CSS (font e padding ridotti)
+    const modes = ["normal", "compact", "superCompact"];
+    let bestScale = 1;
 
-      // 3) doppio frame per layout stabile
+    for (let mode of modes) {
+      root.classList.remove("compact", "superCompact");
+      if (mode !== "normal") root.classList.add(mode);
+      
+      // Misurazione quasi istantanea senza attendere lunghe transizioni
+      bestScale = computeScale(p);
+      
+      // Se la scala è quasi perfetta (sopra il 96%), si ferma
+      if (bestScale > 0.96) break; 
+    }
+
+    // Applica la scala finale con un limite minimo per garantire leggibilità
+    root.style.setProperty("--ui-scale", Math.max(MIN_SCALE_LIMIT, bestScale));
+
+    // Ora che tutto è calcolato e posizionato, mostra la scheda
+    // Usiamo requestAnimationFrame per assicurarci che il browser abbia applicato il CSS
+    requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        applyLockedHeight();
-        fitPassageByContent(p);
+        p.classList.add("is-ready");
         running = false;
       });
     });
   }
 
-  // init
-  stabilize();
+  // Listener per ricalcolare su resize della finestra o del visual viewport
+  window.addEventListener("resize", fitEverything);
+  if (window.visualViewport) window.visualViewport.addEventListener("resize", fitEverything);
+  
+  // Osserva quando Harlowe cambia passaggio per ricalcolare
+  const observer = new MutationObserver((mutations) => {
+    for(let m of mutations) {
+      if(m.addedNodes.length) {
+        fitEverything();
+        break;
+      }
+    }
+  });
+  
+  const target = document.querySelector("tw-story") || document.body;
+  observer.observe(target, { childList: true, subtree: true });
 
-  // viewport changes
-  const vv = window.visualViewport;
-  const onResizeLike = () => stabilize();
-
-  if (vv) {
-    vv.addEventListener("resize", onResizeLike, { passive:true });
-    vv.addEventListener("scroll", onResizeLike, { passive:true });
-  }
-  window.addEventListener("resize", onResizeLike, { passive:true });
-
-  // rotation: reset lock
-  window.addEventListener("orientationchange", () => {
-    lockedH = null;
-    setTimeout(stabilize, 160);
-  }, { passive:true });
-
-  // change passage (Harlowe)
-  const story = document.querySelector("tw-story") || document.body;
-  new MutationObserver(() => stabilize()).observe(story, { childList:true, subtree:true });
+  // Primo avvio immediato
+  fitEverything();
 })();</script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
 (link: &quot;Inizia&quot;)[
 (set: $provincia to &quot;&quot;)
