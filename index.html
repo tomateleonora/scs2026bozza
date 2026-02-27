@@ -177,70 +177,7 @@ tw-link { background: #34d399 !important; }
 
   .unlockBox-split { flex-direction: column; }
   .projImage { max-height: 28vh !important; }
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">(() => {
-  function ensureNav() {
-    const story = document.querySelector("tw-story");
-    const p = document.querySelector("tw-passage");
-    if (!story || !p) return;
-
-    const isResult = p.querySelector(".unlockBox-split");
-    if (isResult) {
-      const oldNav = p.querySelector(".pixelNav");
-      if (oldNav) oldNav.remove();
-      return;
-    }
-
-    if (p.querySelector(".pixelNav")) return;
-
-    const nav = document.createElement("div");
-    nav.className = "pixelNav";
-
-    const isStart = (p.getAttribute("name") || "") === "Start";
-
-    if (!isStart) {
-      const backBtn = document.createElement("button");
-      backBtn.type = "button";
-      backBtn.className = "pixelBtn";
-      backBtn.textContent = "⟵ INDIETRO";
-      backBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (window.Engine && typeof Engine.backward === "function") Engine.backward();
-      });
-      nav.appendChild(backBtn);
-    }
-
-    const nextBtn = document.createElement("button");
-    nextBtn.type = "button";
-    nextBtn.className = "pixelBtn";
-    nextBtn.textContent = "AVANTI ⟶";
-    nextBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (window.Engine && typeof Engine.forward === "function") Engine.forward();
-    });
-    nav.appendChild(nextBtn);
-
-    p.appendChild(nav);
-  }
-
-  function boot() {
-    const story = document.querySelector("tw-story");
-    if (!story) {
-      setTimeout(boot, 50);
-      return;
-    }
-
-    const observer = new MutationObserver(() => ensureNav());
-    observer.observe(story, { childList: true, subtree: true });
-
-    ensureNav();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
-  } else {
-    boot();
-  }
-})();</script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript"></script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
 (link: &quot;Inizia&quot;)[
 (set: $provincia to &quot;&quot;)
 (set: $a2 to &quot;&quot;)(set: $a3 to &quot;&quot;)(set: $a4 to &quot;&quot;)(set: $a5 to &quot;&quot;)
@@ -283,7 +220,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-tmp.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-sri.PDF&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -302,7 +239,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-melara.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-msm.PDF&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -338,7 +275,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-culturando.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-cul.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -356,7 +293,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-cyber.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; https://tomateleonora.github.io/scs2026bozza/scheda-cyb.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -374,7 +311,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-powerup.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-pup.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -392,7 +329,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-protagonisti.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-pro.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -410,7 +347,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-energie.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-eic.PDF&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -428,7 +365,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-sinergie.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-gsr.PDF&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -446,7 +383,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-animare.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-ain.PDF&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -464,7 +401,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-maria.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-mat.PDF&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -482,7 +419,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-amplifica.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-amp.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -500,7 +437,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-consumi.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-csg.PDF&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -518,7 +455,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-sport.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-spv.PDF&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -536,7 +473,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-rinnovamenti.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-rin.PDF&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
@@ -554,7 +491,7 @@ tw-link { background: #34d399 !important; }
   &lt;/div&gt;
 
   &lt;div class=&quot;right-col&quot;&gt;
-    &lt;a class=&quot;btnDownload&quot; href=&quot;https://tomateleonora.github.io/scs2026bozza/scheda-ali.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
+    &lt;a class=&quot;btnDownload&quot; https://tomateleonora.github.io/scs2026bozza/scheda-ali.pdf&quot; target=&quot;_blank&quot;&gt;SCARICA LA SCHEDA&lt;/a&gt;
     
     &lt;div class=&quot;unlockActions&quot;&gt;
       (link-goto: &quot;RIFAI IL QUIZ&quot;, &quot;Start&quot;)
