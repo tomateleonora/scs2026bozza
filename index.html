@@ -11,293 +11,236 @@
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play SCS2026.</tw-noscript></noscript></tw-story>
 <tw-storydata name="SCS2026" startnode="1" creator="Twine" creator-version="2.11.1" format="Harlowe" format-version="3.3.9" ifid="53A09E96-1578-4CFC-8B54-A9260222E79E" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P:wght@400;700&display=swap');
 
-:root {
-  --appH: 100svh;
-  --ui-scale: 1;
-  --sky: #87CEEB;
-  --panel: #FFF4C7;
-  --ink: #2a2a2a;
-  --stroke: #2a2a2a;
-  --btn: #34d399;
-  --reward: #FFD700;
-  
-  --pad: 18px;
-  --gap: 15px;
-  --titleSize: clamp(16px, 2.5vw, 22px);
-}
+/* Reset base */
+* { box-sizing: border-box; }
+img, video, iframe { max-width: 100%; height: auto; }
 
-/* Modalità compatte forzate dal JS */
-html.compact { --pad: 12px; --gap: 10px; }
-html.superCompact { --pad: 8px; --gap: 5px; --titleSize: 14px; }
-
-@supports not (height: 100svh) { :root { --appH: 100vh; } }
-
-html, body {
-  margin: 0; padding: 0; width: 100%; height: 100%;
-  overflow: hidden; background: var(--sky);
-  font-family: "Press Start 2P", monospace;
-  image-rendering: pixelated;
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-
-/* RESET TESTO: Tutto Nero e Leggibile */
-tw-story, tw-passage, tw-passage *, tw-expression, tw-hook, p, span {
+/* BLOCCA TWINE: niente nero/bianco automatico */
+tw-story, tw-passage, tw-sidebar, #ui-bar {
+  background: transparent !important;
   color: #000 !important;
   text-shadow: none !important;
+  font-family: "Press Start 2P", monospace !important;
 }
 
-tw-story {
-  position: fixed; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  padding: 15px; background: var(--sky);
-  isolation: isolate;
-}
+/* SFONDO + layout responsive vero */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* mobile-friendly viewport */
+  min-height: 100vh;
+  min-height: 100svh;  /* fallback moderno */
+  min-height: 100dvh;  /* meglio su iOS/Android con barre */
+  background-color: #87CEEB !important;
 
-/* NUVOLE DI MARIO */
-tw-story::before {
-  content: ""; position: fixed; inset: 0; pointer-events: none;
-  opacity: 0.7; z-index: -1;
-  background:
+  /* NUVOLE */
+  background-image:
     radial-gradient(circle at 12% 16%, #fff 0 18px, transparent 19px),
     radial-gradient(circle at 16% 16%, #fff 0 24px, transparent 25px),
-    radial-gradient(circle at 21% 16%, #fff 0 18px, transparent 19px),
-    radial-gradient(circle at 58% 22%, #fff 0 18px, transparent 19px),
-    radial-gradient(circle at 62% 22%, #fff 0 24px, transparent 25px),
-    radial-gradient(circle at 67% 22%, #fff 0 18px, transparent 19px);
+    radial-gradient(circle at 67% 22%, #fff 0 18px, transparent 19px) !important;
+
+  /* IMPORTANTISSIMO: niente overflow hidden su mobile */
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  font-family: "Press Start 2P", monospace;
 }
 
-/* PANNELLO DI GIOCO */
+/* tw-story come “contenitore pagina”, centrato ma scrollabile */
+tw-story {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* non forzare centro verticale (taglia!) */
+  padding:
+    calc(16px + env(safe-area-inset-top))
+    calc(16px + env(safe-area-inset-right))
+    calc(16px + env(safe-area-inset-bottom))
+    calc(16px + env(safe-area-inset-left));
+  width: 100%;
+  min-height: 100%;
+}
+
+/* IL PANNELLO CREMA */
 tw-passage {
-  width: min(900px, 94vw);
-  max-height: calc(var(--appH) - 40px) !important;
-  background: var(--panel);
-  border: 5px solid var(--stroke);
-  box-shadow: 8px 8px 0 var(--stroke);
-  padding: var(--pad) !important;
-  display: flex; flex-direction: column;
-  gap: var(--gap);
-  overflow: hidden !important; 
-  transform: scale(var(--ui-scale));
-  transform-origin: center center;
-  opacity: 0; visibility: hidden;
-  z-index: 1;
+  position: relative !important;
+  width: min(850px, 92vw) !important;
+  /* su mobile lasciamo che cresca e che la pagina scrolli */
+  max-height: none !important;
+
+  background-color: #FFF4C7 !important;
+  border: 4px solid #2a2a2a !important;
+  box-shadow: 8px 8px 0 #2a2a2a !important;
+
+  padding: 26px !important;
+  margin: 0 auto !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+
+  /* Niente scroll interno “forzato” su mobile: è spesso quello che taglia */
+  overflow: visible !important;
 }
 
-tw-passage.is-ready { opacity: 1; visibility: visible; }
-
-/* TITOLI NERI E GRASSETTO */
-tw-passage > p:first-of-type, h1, h2 {
-  font-size: var(--titleSize) !important;
-  font-weight: 700 !important;
-  margin-bottom: 5px !important;
-  display: block;
-  line-height: 1.4;
+/* TESTI */
+h1, h2, h3, p, span, tw-link, .unlockBadge {
+  color: #000 !important;
+  text-shadow: none !important;
+  font-family: "Press Start 2P", monospace !important;
 }
 
-/* BOTTONI VERDI (SCELTE) */
-tw-link {
-  display: block !important;
-  padding: 14px 10px !important;
-  border: 4px solid var(--stroke) !important;
-  box-shadow: 4px 4px 0 var(--stroke) !important;
-  background: var(--btn) !important;
-  color: #fff !important;
-  text-align: center !important;
-  text-decoration: none !important;
-  font-size: 12px;
-  margin: 5px 0 !important;
+/* Titolo risultato */
+.unlockBadge {
+  font-size: 18px !important;
+  margin-bottom: 20px !important;
+  text-align: center;
+  width: 100%;
 }
 
-/* =========================================
-   LAYOUT A DUE COLONNE (PAGINA FINALE)
-   ========================================= */
+/* Layout risultati */
 .unlockBox-split {
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
+  gap: 25px;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  width: 100%;
-  height: 100%;
 }
 
-.left-col {
+.left-col, .right-col {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
-.right-col {
-  flex: 1.2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 12px;
-}
-
-/* Immagine Progetto */
+/* Immagine */
 .projImage {
-  max-height: 40vh !important; /* Molto spazio in split mode */
-  width: auto;
   max-width: 100%;
-  object-fit: contain;
-}
-
-.unlockBadge {
-  background: var(--stroke);
-  color: #fff !important;
-  padding: 5px 10px;
-  font-size: 10px;
-}
-
-/* BOTTONE ORO (SCARICA) */
-a.btnDownload {
+  height: auto;
+  max-height: 40vh !important;
+  border: none !important;
+  box-shadow: none !important;
   display: block;
-  width: 100%;
-  padding: 16px;
-  background: var(--reward) !important;
-  color: #000 !important;
-  font-weight: 700 !important;
-  border: 4px solid var(--stroke);
-  box-shadow: 4px 4px 0 var(--stroke);
-  text-decoration: none;
-  text-align: center;
-  font-size: 14px;
 }
 
-/* BOTTONE RIFAI (ROSSO/CORALLO) */
-.unlockActions tw-link {
-  background: #ff7e5f !important;
-  color: #fff !important;
-  font-size: 11px !important;
-  padding: 12px !important;
-  box-shadow: 4px 4px 0 var(--stroke) !important;
+/* Bottoni */
+tw-link, .btnDownload, .pixelBtn {
+  display: block !important;
+  width: 100% !important;
+  padding: 18px 10px !important;
+  border: 4px solid #2a2a2a !important;
+  box-shadow: 4px 4px 0 #2a2a2a !important;
+  text-align: center !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  line-height: 1.4 !important;
 }
 
-.scsLink {
-  font-size: 9px;
-  line-height: 1.4;
-  text-align: center;
-}
+/* colori */
+tw-link { background: #34d399 !important; }
+.btnDownload { background: #FFD700 !important; color: #000 !important; font-weight: bold; }
+.unlockActions tw-link { background: #ff7e5f !important; }
 
-/* NAVIGAZIONE BACK/NEXT */
+/* Navigazione */
 .pixelNav {
-  margin-top: auto;
-  display: flex; gap: 10px;
-  padding-top: 10px;
-  border-top: 4px solid var(--stroke);
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 3px solid #2a2a2a;
 }
+
 .pixelBtn {
-  flex: 1; padding: 12px;
-  font-family: inherit; font-size: 10px;
-  background: #a7f3d0; border: 4px solid var(--stroke);
-  box-shadow: 4px 4px 0 var(--stroke);
-  cursor: pointer;
+  background: #a7f3d0 !important;
+  flex: 1;
+  color: #000 !important;
+  font-size: 12px !important;
 }
 
-/* RESPONSIVE: Se lo schermo è stretto (cellulare) torna in colonna */
+/* Mobile */
 @media (max-width: 650px) {
-  .unlockBox-split { flex-direction: column; gap: 10px; }
-  .projImage { max-height: 22vh !important; }
-  .right-col { gap: 8px; }
-}
-
-tw-sidebar { display: none; }
-
-tw-passage {
-  /* ... altre regole ... */
-  transform: scale(var(--ui-scale)) !important;
-  transform-origin: center top !important; /* Molto più stabile per lo scaling */
-  margin-top: 10px !important; /* Tiene un po' di distacco dal bordo superiore */
-  transition: transform 0.1s ease-out; /* Rende lo scaling fluido */
-}
-
-/* Assicurati che l'immagine non abbia dimensioni fisse che bloccano lo scaling */
-.projImage {
-  height: auto !important;
-  max-width: 100% !important;
-  flex-shrink: 1 !important;
-}
-</style><script role="script" id="twine-user-script" type="text/twine-javascript">(() => {
-  const root = document.documentElement;
-  let running = false;
-
-  function applyLockedHeight() {
-    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-    root.style.setProperty("--appH", vh + "px");
+  tw-story {
+    padding:
+      calc(12px + env(safe-area-inset-top))
+      calc(12px + env(safe-area-inset-right))
+      calc(12px + env(safe-area-inset-bottom))
+      calc(12px + env(safe-area-inset-left));
   }
 
-  function getPassage() { return document.querySelector("tw-passage"); }
-
-  function ensurePixelNav(p) {
-    if (!p || p.querySelector(".pixelNav") || p.querySelector(".unlockBox")) return;
-    const nav = document.createElement("div");
-    nav.className = "pixelNav";
-    nav.innerHTML = `<button class="pixelBtn" id="u-btn">⟵ BACK</button><button class="pixelBtn" id="r-btn">NEXT ⟶</button>`;
-    p.appendChild(nav);
-    nav.querySelector("#u-btn").onclick = () => Engine.backward();
-    nav.querySelector("#r-btn").onclick = () => Engine.forward();
+  tw-passage {
+    width: 94vw !important;
+    padding: 14px !important;
+    box-shadow: 6px 6px 0 #2a2a2a !important;
   }
 
-  function computeScale(p) {
-    root.style.setProperty("--ui-scale", "1");
+  .unlockBox-split { flex-direction: column; }
+  .projImage { max-height: 28vh !important; }
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">(() => {
+  function ensureNav() {
     const story = document.querySelector("tw-story");
-    const sRect = story.getBoundingClientRect();
-    
-    // Margine strettissimo per evitare ogni taglio
-    const availW = sRect.width - 20;
-    const availH = sRect.height - 20;
+    const p = document.querySelector("tw-passage");
+    if (!story || !p) return;
 
-    const contentH = p.scrollHeight;
-    const contentW = p.scrollWidth;
-
-    return Math.min(1, availW / contentW, availH / contentH);
-  }
-
-  async function fitEverything() {
-    if (running) return;
-    running = true;
-
-    applyLockedHeight();
-    const p = getPassage();
-    if (!p) { running = false; return; }
-
-    p.classList.remove("is-ready");
-    ensurePixelNav(p);
-
-    // Testiamo le modalità
-    const modes = ["normal", "compact", "superCompact"];
-    let finalScale = 1;
-
-    for (let mode of modes) {
-      root.classList.remove("compact", "superCompact");
-      if (mode !== "normal") root.classList.add(mode);
-      await new Promise(r => requestAnimationFrame(r));
-      finalScale = computeScale(p);
-      if (finalScale > 0.98) break;
+    const isResult = p.querySelector(".unlockBox-split");
+    if (isResult) {
+      const oldNav = p.querySelector(".pixelNav");
+      if (oldNav) oldNav.remove();
+      return;
     }
 
-    // Applica scala senza limiti minimi per garantire il "No Scroll"
-    root.style.setProperty("--ui-scale", finalScale);
+    if (p.querySelector(".pixelNav")) return;
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        p.classList.add("is-ready");
-        running = false;
+    const nav = document.createElement("div");
+    nav.className = "pixelNav";
+
+    const isStart = (p.getAttribute("name") || "") === "Start";
+
+    if (!isStart) {
+      const backBtn = document.createElement("button");
+      backBtn.type = "button";
+      backBtn.className = "pixelBtn";
+      backBtn.textContent = "⟵ INDIETRO";
+      backBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (window.Engine && typeof Engine.backward === "function") Engine.backward();
       });
+      nav.appendChild(backBtn);
+    }
+
+    const nextBtn = document.createElement("button");
+    nextBtn.type = "button";
+    nextBtn.className = "pixelBtn";
+    nextBtn.textContent = "AVANTI ⟶";
+    nextBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (window.Engine && typeof Engine.forward === "function") Engine.forward();
     });
+    nav.appendChild(nextBtn);
+
+    p.appendChild(nav);
   }
 
-  window.addEventListener("resize", fitEverything);
-  const observer = new MutationObserver(() => fitEverything());
-  observer.observe(document.querySelector("tw-story") || document.body, { childList: true, subtree: true });
-  
-  fitEverything();
-})();
-</script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
+  function boot() {
+    const story = document.querySelector("tw-story");
+    if (!story) {
+      setTimeout(boot, 50);
+      return;
+    }
+
+    const observer = new MutationObserver(() => ensureNav());
+    observer.observe(story, { childList: true, subtree: true });
+
+    ensureNav();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+})();</script><tw-passagedata pid="1" name="Start" tags="" position="600,300" size="100,100">Quiz Servizio Civile Solidale — Trova il progetto giusto
 (link: &quot;Inizia&quot;)[
 (set: $provincia to &quot;&quot;)
 (set: $a2 to &quot;&quot;)(set: $a3 to &quot;&quot;)(set: $a4 to &quot;&quot;)(set: $a5 to &quot;&quot;)
